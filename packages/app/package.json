@@ -1,0 +1,19 @@
+{
+  "name": "@43081j/configurator-app",
+  "version": "0.0.1",
+  "description": "Devtool configurator web app",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "lint:types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "preact": "^10.28.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "unocss": "^66.5.11",
+    "vite": "^7.3.0"
+  }
+}

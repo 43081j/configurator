@@ -1,14 +1,12 @@
 {
   "compilerOptions": {
-    "outDir": "./lib",
+    "noEmit": true,
     "module": "node18",
     "target": "esnext",
     "types": [],
     "sourceMap": false,
     "declaration": true,
     "declarationMap": false,
-    "jsx": "react-jsx",
-    "jsxImportSource": "preact",
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "noImplicitReturns": true,
@@ -17,6 +15,7 @@
     "noUnusedParameters": true,
     "strict": true,
     "isolatedModules": true,
+    "isolatedDeclarations": true,
     "noUncheckedSideEffectImports": true,
     "erasableSyntaxOnly": true,
     "skipLibCheck": true

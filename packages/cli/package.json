@@ -1,0 +1,13 @@
+{
+  "name": "@43081j/configurator-cli",
+  "version": "0.0.1",
+  "description": "Devtool configurator CLI",
+  "type": "module",
+  "main": "./src/main.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

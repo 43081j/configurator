@@ -1,0 +1,22 @@
+{
+  "name": "@43081j/configurator-core",
+  "version": "0.0.1",
+  "description": "Core library for devtool-configurator",
+  "type": "module",
+  "main": "./dist/main.js",
+  "exports": {
+    ".": {
+      "types": "./dist/main.d.ts",
+      "default": "./dist/main.js"
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "lint:types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "eslint-plugin-lit": "^2.1.1",
+    "tsdown": "^0.3.1",
+    "typescript": "^5.9.3"
+  }
+}

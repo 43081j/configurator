@@ -19,27 +19,23 @@
   "license": "MIT",
   "author": "James Garbutt (https://github.com/43081j)",
   "type": "module",
-  "main": "lib/main.js",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "build": "vite build",
-    "dev": "vite dev",
-    "format": "prettier --write src",
-    "lint:format": "prettier --check src",
-    "lint:js": "oxlint src",
-    "lint:types": "tsgo --noEmit",
+    "build": "npm run --workspaces build",
+    "dev": "npm run dev -w @43081j/configurator-app",
+    "format": "prettier --write \"packages/*/src/**/*\"",
+    "lint:format": "prettier --check \"packages/*/src/**/*\"",
+    "lint:js": "oxlint packages/cli packages/core packages/app",
+    "lint:types": "npm run lint:types --workspaces --if-present",
     "lint": "npm run lint:format && npm run lint:js && npm run lint:types",
     "test": "vitest run"
   },
   "devDependencies": {
-    "@typescript/native-preview": "^7.0.0-dev.20251227.1",
-    "eslint-plugin-lit": "^2.1.1",
     "oxlint": "^1.35.0",
     "prettier": "^3.7.4",
-    "unocss": "^66.5.11",
-    "vite": "^7.3.0",
     "vitest": "^4.0.16"
-  },
-  "dependencies": {
-    "preact": "^10.28.1"
   }
 }
