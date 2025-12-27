@@ -1,0 +1,42 @@
+{
+  "name": "devtool-configurator",
+  "version": "0.0.1",
+  "description": "A tool for configuring various JS/TS developer tools.",
+  "keywords": [
+    "oxlint",
+    "eslint",
+    "prettier",
+    "config"
+  ],
+  "homepage": "https://github.com/43081j/devtool-configurator#readme",
+  "bugs": {
+    "url": "https://github.com/43081j/devtool-configurator/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/43081j/devtool-configurator.git"
+  },
+  "license": "MIT",
+  "author": "James Garbutt (https://github.com/43081j)",
+  "type": "module",
+  "main": "lib/main.js",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite dev",
+    "lint:format": "prettier --check src",
+    "lint:js": "oxlint src",
+    "lint:types": "tsgo --noEmit",
+    "lint": "npm run lint:format && npm run lint:js && npm run lint:types",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@typescript/native-preview": "^7.0.0-dev.20251227.1",
+    "oxlint": "^1.35.0",
+    "prettier": "^3.7.4",
+    "vite": "^7.3.0",
+    "vitest": "^4.0.16"
+  },
+  "dependencies": {
+    "preact": "^10.28.1"
+  }
+}
