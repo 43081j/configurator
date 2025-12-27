@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "@typescript/native-preview": "^7.0.0-dev.20251227.1",
+    "eslint-plugin-lit": "^2.1.1",
     "oxlint": "^1.35.0",
     "prettier": "^3.7.4",
     "unocss": "^66.5.11",
