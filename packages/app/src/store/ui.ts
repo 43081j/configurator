@@ -1,3 +1,3 @@
 import {signal} from '@preact/signals';
 
-export const activeTab = signal<number>(0);
+export const activeTab = signal<string>('summary');

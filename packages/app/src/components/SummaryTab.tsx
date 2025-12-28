@@ -15,10 +15,7 @@ export function SummaryTab({
   devDependencies
 }: SummaryTabProps) {
   const handleFileClick = (path: string) => {
-    const index = files.findIndex((file) => file.name === path);
-    if (index !== -1) {
-      activeTab.value = index + 1;
-    }
+    activeTab.value = path;
   };
   const depsArray = Array.from(dependencies.entries()).map(
     ([name, version]) => `${name}@${version}`

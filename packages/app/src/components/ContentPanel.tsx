@@ -39,41 +39,52 @@ export function ContentPanel() {
       });
 
       setContent({files, dependencies, devDependencies});
-      activeTab.value = 0;
+      // Reset to summary only if current active tab no longer exists
+      if (
+        activeTab.value !== 'summary' &&
+        !files.some((file) => file.name === activeTab.value)
+      ) {
+        activeTab.value = 'summary';
+      }
     };
 
     generateContent();
   }, [config.value]);
 
-  const tabs = ['Summary', ...content.files.map((file) => file.name)];
+  const tabs = [
+    {id: 'summary', label: 'Summary'},
+    ...content.files.map((file) => ({id: file.name, label: file.name}))
+  ];
 
   return (
     <div class="flex flex-col h-full">
       <div class="flex border-b border-gray-200 bg-white">
-        {tabs.map((tab, index) => (
+        {tabs.map((tab) => (
           <button
-            key={tab}
-            onClick={() => (activeTab.value = index)}
+            key={tab.id}
+            onClick={() => (activeTab.value = tab.id)}
             class={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-              activeTab.value === index
+              activeTab.value === tab.id
                 ? 'border-blue-600 text-blue-600'
                 : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
             }`}
           >
-            {tab}
+            {tab.label}
           </button>
         ))}
       </div>
 
       <div class="flex-1 overflow-auto p-6">
-        {activeTab.value === 0 ? (
+        {activeTab.value === 'summary' ? (
           <SummaryTab
             files={content.files}
             dependencies={content.dependencies}
             devDependencies={content.devDependencies}
           />
         ) : (
-          <FileTab file={content.files[activeTab.value - 1]} />
+          <FileTab
+            file={content.files.find((file) => file.name === activeTab.value)!}
+          />
         )}
       </div>
     </div>
