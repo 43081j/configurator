@@ -1,8 +1,14 @@
-import { defineConfig, presetWind4, presetTypography } from 'unocss';
+import {
+  defineConfig,
+  presetWind4,
+  presetTypography,
+  presetIcons
+} from 'unocss';
 
 export default defineConfig({
   presets: [
     presetWind4(),
-    presetTypography()
+    presetTypography(),
+    presetIcons()
   ]
 });
