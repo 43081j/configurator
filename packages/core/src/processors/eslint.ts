@@ -58,7 +58,7 @@ const createESLintConfig = (context: Context): string => {
   const sourcesAndTests = JSON.stringify([
     ...context.config.sources,
     ...context.config.tests
-  ]);
+  ]).replaceAll(/,/g, ', ');
   const extendsList: string[] = ['plugin:js/recommended'];
   const plugins: Array<[string, string]> = [['js', '']];
   const globals: string[] = [];
@@ -83,7 +83,7 @@ const createESLintConfig = (context: Context): string => {
       break;
     }
     case 'vue':
-      context.addDependency('eslint-plugin-vue', '^10.6.2');
+      context.addDevDependency('eslint-plugin-vue', '^10.6.2');
       imports.push(`import vue from 'eslint-plugin-vue';`);
       extendsList.push('vue/flat/recommended');
       plugins.push(['vue', '']);
@@ -155,10 +155,14 @@ ${imports.join('\n')}
 export default defineConfig([
   {
     files: ${sourcesAndTests},
-    languageOptions: {
+    languageOptions: {${
+      globals.length === 0
+        ? ''
+        : `
       globals: {
         ${globalsString}
-      }
+      }`
+    }
     },
     plugins: {
       ${pluginsString}
