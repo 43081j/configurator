@@ -2,7 +2,7 @@ import {useEffect, useState} from 'preact/hooks';
 import {execute} from '@43081j/configurator-core';
 import type {FileInfo} from '@43081j/configurator-core';
 import {config} from '../store/config.js';
-import {activeTab} from '../store/ui.js';
+import {activeTab, sidebarOpen} from '../store/ui.js';
 import {SummaryTab} from './SummaryTab.js';
 import {FileTab} from './FileTab.js';
 
@@ -58,7 +58,15 @@ export function ContentPanel() {
 
   return (
     <div class="flex flex-col h-full">
-      <div class="flex border-b border-gray-200 bg-white">
+      <div class="flex items-center border-b border-gray-200 bg-white">
+        <button
+          onClick={() => (sidebarOpen.value = true)}
+          class="md:hidden p-2 ml-2 mr-2 hover:bg-gray-100 rounded-lg transition-colors"
+          aria-label="Open menu"
+        >
+          <div class="i-material-symbols-menu text-2xl text-gray-700" />
+        </button>
+
         {tabs.map((tab) => (
           <button
             key={tab.id}
