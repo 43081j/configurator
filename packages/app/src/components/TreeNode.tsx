@@ -8,7 +8,7 @@ export interface TreeNodeData {
 export interface TreeNodeProps {
   node: TreeNodeData;
   depth: number;
-  onFileClick: (path: string) => void | undefined;
+  onFileClick: ((path: string) => void) | undefined;
 }
 
 export function TreeNode({node, depth, onFileClick}: TreeNodeProps) {
