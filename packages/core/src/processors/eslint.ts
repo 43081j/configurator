@@ -1,12 +1,44 @@
-import type {Processor, LintCategory, Context} from '../types.js';
+import type {Processor, Context} from '../types.js';
+
+const stringifyIndented = (obj: unknown, indent: number): string => {
+  return JSON.stringify(obj, null, 2).replaceAll(
+    /(?<=\n)/g,
+    ' '.repeat(indent)
+  );
+};
+
+const createAngularConfig = (): string => {
+  return `
+  {
+    files: ['**/*.html'],
+    extends: ['angular/templateRecommended']
+  }`;
+};
+
+const createSvelteConfig = (context: Context): string => {
+  return `
+  {
+    files: ['**/*.svelte', '**/*.svelte.${context.config.typescript ? 'ts' : 'js'}'],
+    languageOptions: {
+      parserOptions: {
+        svelteConfig${
+          context.config.typescript
+            ? `,
+        projectService: true,
+        extraFileExtensions: ['svelte'],
+        parser: ts.parser`
+            : ''
+        }
+      }
+    }
+  }`;
+};
 
 const createESLintConfig = (context: Context): string => {
   const imports: string[] = [
     `import {defineConfig} from 'eslint/config';`,
     `import js from '@eslint/js';`
   ];
-  const sources = JSON.stringify(context.config.sources);
-  const tests = JSON.stringify(context.config.tests);
   const sourcesAndTests = JSON.stringify([
     ...context.config.sources,
     ...context.config.tests
@@ -14,12 +46,14 @@ const createESLintConfig = (context: Context): string => {
   const extendsList: string[] = ['plugin:js/recommended'];
   const plugins: Array<[string, string]> = [['js', '']];
   const globals: string[] = [];
+  const uiFramework = context.config.uiFramework;
+  const extraConfigs: string[] = [];
   if (context.config.typescript) {
     imports.push(`import ts from 'typescript-eslint';`);
     extendsList.push('ts/flat/strict');
     plugins.push(['ts', '']);
   }
-  switch (context.config.uiFramework) {
+  switch (uiFramework) {
     case 'react': {
       context.addDependency('@eslint-react/eslint-plugin', '^2.4.0');
       imports.push(`import eslintReact from '@eslint-react/eslint-plugin';`);
@@ -43,6 +77,7 @@ const createESLintConfig = (context: Context): string => {
       imports.push(`import svelteConfig from './svelte.config.js';`);
       extendsList.push('svelte/recommended');
       plugins.push(['svelte', '']);
+      extraConfigs.push(createSvelteConfig(context));
       break;
     case 'lit':
       context.addDevDependency('eslint-plugin-lit', '^2.1.1');
@@ -50,6 +85,11 @@ const createESLintConfig = (context: Context): string => {
       extendsList.push('lit/flat/recommended');
       break;
     case 'angular':
+      context.addDevDependency('angular-eslint', '^21.1.0');
+      imports.push(`import angular from 'angular-eslint';`);
+      extendsList.push('angular/tsRecommended');
+      plugins.push(['angular', '']);
+      extraConfigs.push(createAngularConfig());
       break;
   }
 
@@ -65,11 +105,9 @@ const createESLintConfig = (context: Context): string => {
       break;
   }
 
-  if (context.config.uiFramework) {
+  if (uiFramework) {
     globals.push('...globals.browser');
   }
-
-  const categories: Record<string, string> = {};
 
   if (context.config.lintConfig) {
     const categories = context.config.lintConfig.categories;
@@ -97,30 +135,18 @@ const createESLintConfig = (context: Context): string => {
 ${imports.join('\n')}
 
 export default defineConfig([
-	{
-		files: ${sourcesAndTests},
+  {
+    files: ${sourcesAndTests},
     languageOptions: {
       globals: {
         ${globalsString}
       }
     },
-		plugins: {
+    plugins: {
       ${pluginsString}
     },
-		extends: ${JSON.stringify(extendsList, null, 2)}
-  }${
-    context.config.uiFramework === 'svelte'
-      ? `,
-  {
-    files: ['**/*.svelte', '**/*.svelte.${context.config.typescript ? 'ts' : 'js'}'],
-    languageOptions: {
-      parserOptions: {
-        svelteConfig
-      }
-    }
-  }`
-      : ''
-  }
+    extends: ${stringifyIndented(extendsList, 4)}
+  }${extraConfigs.length > 0 ? `,${extraConfigs.join('\n')}` : ''}
 ];
   `.trim();
 };
