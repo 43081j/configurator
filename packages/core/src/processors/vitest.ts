@@ -16,6 +16,8 @@ export const processor: Processor = async (context) => {
     return;
   }
 
+  context.addDevDependency('vitest', '^4.0.16');
+
   const config = createVitestConfig(context);
 
   await context.emitFile({

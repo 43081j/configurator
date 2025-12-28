@@ -16,6 +16,8 @@ export const processor: Processor = async (context) => {
     return;
   }
 
+  context.addDevDependency('prettier', '^3.7.4');
+
   const config: PrettierConfig = {
     ...defaultPrettierConfig
   };
@@ -24,6 +26,7 @@ export const processor: Processor = async (context) => {
     case 'svelte': {
       config.plugins ??= [];
       config.plugins.push('prettier-plugin-svelte');
+      context.addDevDependency('prettier-plugin-svelte', '^3.4.1');
       config.overrides ??= [];
       config.overrides.push({
         files: '*.svelte',

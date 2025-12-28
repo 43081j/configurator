@@ -31,6 +31,8 @@ export interface FileInfo {
 export interface Context {
   config: Config;
   emitFile: (file: FileInfo) => Promise<void>;
+  addDependency: (name: string, version: string) => void;
+  addDevDependency: (name: string, version: string) => void;
 }
 
 export type Processor = (context: Context) => Promise<void>;

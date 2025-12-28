@@ -15,6 +15,8 @@ export const processor: Processor = async (context) => {
     return;
   }
 
+  context.addDevDependency('oxfmt', '^0.20.0');
+
   const config: OxfmtConfig = {
     ...defaultOxfmtConfig
   };

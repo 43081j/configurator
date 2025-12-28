@@ -5,9 +5,12 @@ export const processor: Processor = async (context) => {
     return;
   }
 
+  context.addDevDependency('mocha', '^11.7.5');
+
   const config: MochaConfig = {};
 
   if (context.config.typescript) {
+    context.addDevDependency('ts-node', '^10.9.2');
     config.extension = ['ts'];
     config.require = 'ts-node/register';
     config.loader = 'ts-node/esm';

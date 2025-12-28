@@ -22,6 +22,8 @@ export const processor: Processor = async (context) => {
     return;
   }
 
+  context.addDevDependency('oxlint', '^1.35.0');
+
   const plugins: string[] = ['eslint', 'oxc'];
   const env: Record<string, boolean> = {};
   const rules: Record<string, OxlintRuleConfig> = {};
@@ -43,9 +45,11 @@ export const processor: Processor = async (context) => {
       break;
     case 'svelte':
       plugins.push('eslint-plugin-svelte');
+      context.addDevDependency('eslint-plugin-svelte', '^3.13.1');
       break;
     case 'lit':
       plugins.push('eslint-plugin-lit');
+      context.addDevDependency('eslint-plugin-lit', '^2.1.1');
       for (const [ruleName, ruleConfig] of Object.entries(
         litConfigs['flat/recommended'].rules!
       )) {

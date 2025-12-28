@@ -89,21 +89,31 @@ function toSelectOptions<T extends string>(
 
 class ConfiguratorContext implements Context {
   public config: Config;
-  private outDir: string;
+  #outDir: string;
+  #devDependencies: Record<string, string> = {};
+  #dependencies: Record<string, string> = {};
 
   constructor(config: Config, outDir: string) {
     this.config = config;
-    this.outDir = outDir;
+    this.#outDir = outDir;
   }
 
   async emitFile(file: FileInfo): Promise<void> {
-    const filePath = join(this.outDir, file.name);
+    const filePath = join(this.#outDir, file.name);
     await mkdir(dirname(filePath), {recursive: true});
     const contents =
       typeof file.contents === 'string'
         ? file.contents
         : JSON.stringify(file.contents, null, 2);
     await writeFile(filePath, contents, 'utf-8');
+  }
+
+  addDevDependency(packageName: string, version: string): void {
+    this.#devDependencies[packageName] = version;
+  }
+
+  addDependency(packageName: string, version: string): void {
+    this.#dependencies[packageName] = version;
   }
 }
 
