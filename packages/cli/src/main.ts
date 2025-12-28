@@ -1,9 +1,10 @@
 import * as prompts from '@clack/prompts';
 import sade from 'sade';
-import {writeFile, mkdir} from 'node:fs/promises';
+import {writeFile, mkdir, access} from 'node:fs/promises';
 import {join, dirname} from 'node:path';
+import {styleText} from 'node:util';
 import {
-  process,
+  execute,
   type Config,
   type Context,
   type FileInfo,
@@ -111,6 +112,13 @@ export function cli(): void {
 
       if (!outDir) {
         prompts.log.error('Output directory is required');
+        return;
+      }
+
+      try {
+        await access(outDir);
+      } catch {
+        prompts.log.error(`Output directory does not exist: ${outDir}`);
         return;
       }
 
@@ -294,6 +302,16 @@ export function cli(): void {
       }
 
       const context = new ConfiguratorContext(config, outDir);
-      await process(context);
+
+      const spinner = prompts.spinner();
+      spinner.start('Generating configuration files...');
+      await execute(context);
+      spinner.stop('Configuration files generated successfully!');
+
+      prompts.outro(
+        `All done! Your configuration files are ready in ${styleText(['bgGray'], outDir)} 🚀`
+      );
     });
+
+  prog.parse(process.argv);
 }

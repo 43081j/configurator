@@ -8,7 +8,7 @@ import type {Context, Processor} from './types.js';
 
 export * from './types.js';
 
-export async function process(context: Context): Promise<void> {
+export async function execute(context: Context): Promise<void> {
   const {config} = context;
 
   const processors: Processor[] = [];
