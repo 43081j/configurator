@@ -360,15 +360,11 @@ export function cli(): void {
     .option('--tests', 'Test globs', 'test')
     .option('--linter', 'Linter (eslint, oxlint, biome)', 'eslint')
     .option('--formatter', 'Formatter (prettier, oxfmt, biome)', 'prettier')
-    .option(
-      '--test-framework',
-      'Test framework (jest, mocha, vitest)',
-      'vitest'
-    )
+    .option('--test-framework', 'Test framework (jest, mocha, vitest)', 'none')
     .option(
       '--ui-framework',
       'UI framework (react, vue, svelte, lit, angular)',
-      'svelte'
+      'none'
     )
     .option(
       '--lint-categories',
