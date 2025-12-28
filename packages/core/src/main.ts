@@ -1,5 +1,5 @@
 import {processor as oxlintProcessor} from './processors/oxlint.js';
-import type {Context, Processor} from './types.js';
+import type {Context, Processor, Config} from './types.js';
 
 export * from './types.js';
 
@@ -10,3 +10,14 @@ export async function execute(context: Context): Promise<void> {
     await processor(context);
   }
 }
+
+export const defaults: Config = {
+  tests: ['src/**/*.test.ts'],
+  sources: ['src/**/*.ts'],
+  linter: 'eslint',
+  formatter: 'prettier',
+  lintConfig: {
+    categories: ['correctness', 'performance', 'modernization']
+  },
+  typescript: true
+};

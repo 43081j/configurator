@@ -12,7 +12,8 @@ import {
   type Formatter,
   type TestFramework,
   type UIFramework,
-  type LintCategory
+  type LintCategory,
+  defaults
 } from '@43081j/configurator-core';
 
 const LINTERS: Record<Linter, string> = {
@@ -356,22 +357,34 @@ export function cli(): void {
   const prog = sade('configurator <outDir>', true);
 
   prog
-    .option('--sources', 'Source globs', 'src')
-    .option('--tests', 'Test globs', 'test')
-    .option('--linter', 'Linter (eslint, oxlint, biome)', 'eslint')
-    .option('--formatter', 'Formatter (prettier, oxfmt, biome)', 'prettier')
-    .option('--test-framework', 'Test framework (jest, mocha, vitest)', 'none')
+    .option('--sources', 'Source globs', defaults.sources.join(', '))
+    .option('--tests', 'Test globs', defaults.tests.join(', '))
+    .option(
+      '--linter',
+      'Linter (eslint, oxlint, biome)',
+      defaults.linter ?? 'none'
+    )
+    .option(
+      '--formatter',
+      'Formatter (prettier, oxfmt, biome)',
+      defaults.formatter ?? 'none'
+    )
+    .option(
+      '--test-framework',
+      'Test framework (jest, mocha, vitest)',
+      defaults.testFramework ?? 'none'
+    )
     .option(
       '--ui-framework',
       'UI framework (react, vue, svelte, lit, angular)',
-      'none'
+      defaults.uiFramework ?? 'none'
     )
     .option(
       '--lint-categories',
       'Lint categories (correctness, performance, modernization)',
-      ''
+      defaults.lintConfig?.categories.join(',') ?? ''
     )
-    .option('--typescript', 'Use TypeScript', false)
+    .option('--typescript', 'Use TypeScript', defaults.typescript === true)
     .option('--interactive', 'Run in interactive mode', false)
     .action(handler);
 
