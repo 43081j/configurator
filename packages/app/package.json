@@ -12,7 +12,7 @@
     "preact": "^10.28.1"
   },
   "devDependencies": {
-    "@typescript/native-preview": "^7.0.0-dev.20251227.1",
+    "@typescript/native-preview": "^7.0.0-dev.20251228.1",
     "unocss": "^66.5.11",
     "vite": "^7.3.0"
   }
