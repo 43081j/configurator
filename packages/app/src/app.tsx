@@ -3,9 +3,9 @@ import {ContentPanel} from './components/ContentPanel.js';
 
 export function App() {
   return (
-    <div class="flex h-screen">
+    <div class="relative md:flex h-screen">
       <Sidebar />
-      <main class="flex-1 bg-gray-50">
+      <main class="flex-1 bg-gray-50 w-full md:w-auto">
         <ContentPanel />
       </main>
     </div>
