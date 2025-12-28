@@ -1,0 +1,19 @@
+.shine-link {
+  background: linear-gradient(
+    90deg,
+    currentColor 0%,
+    currentColor 30%,
+    #ec4899 50%,
+    currentColor 70%,
+    currentColor 100%
+  );
+  background-size: 300% 100%;
+  background-position: 0% 0;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: background-position 0.8s ease;
+}
+
+.shine-link:hover {
+  background-position: 100% 0;
+}
