@@ -1,10 +1,19 @@
 import {processor as oxlintProcessor} from './processors/oxlint.js';
 import {processor as prettierProcessor} from './processors/prettier.js';
+import {processor as oxfmtProcessor} from './processors/oxfmt.js';
+import {processor as editorConfigProcessor} from './processors/editorconfig.js';
+import {processor as vitestProcessor} from './processors/vitest.js';
 import type {Context, Processor, Config} from './types.js';
 
 export * from './types.js';
 
-const processors = new Set<Processor>([oxlintProcessor, prettierProcessor]);
+const processors = new Set<Processor>([
+  oxlintProcessor,
+  prettierProcessor,
+  oxfmtProcessor,
+  editorConfigProcessor,
+  vitestProcessor
+]);
 
 export async function execute(context: Context): Promise<void> {
   for (const processor of processors) {
