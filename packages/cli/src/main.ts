@@ -11,7 +11,8 @@ import {
   type Linter,
   type Formatter,
   type TestFramework,
-  type UIFramework
+  type UIFramework,
+  type LintCategory
 } from '@43081j/configurator-core';
 
 const LINTERS: Record<Linter, string> = {
@@ -39,6 +40,24 @@ const UI_FRAMEWORKS: Record<UIFramework, string> = {
   lit: 'Lit',
   angular: 'Angular'
 };
+
+const LINT_CATEGORIES: Record<LintCategory, string> = {
+  correctness: 'Correctness',
+  performance: 'Performance',
+  modernization: 'Modernization'
+};
+
+interface Options {
+  sources?: string;
+  tests?: string;
+  linter?: string;
+  formatter?: string;
+  'test-framework'?: string;
+  'ui-framework'?: string;
+  'lint-categories'?: string;
+  typescript?: boolean;
+  interactive?: boolean;
+}
 
 function isValidOption<T extends string>(
   value: string,
@@ -87,6 +106,252 @@ class ConfiguratorContext implements Context {
   }
 }
 
+async function handler(outDir: string, opts: Options): Promise<void> {
+  prompts.intro('Configurator');
+
+  if (!outDir) {
+    prompts.log.error('Output directory is required');
+    return;
+  }
+
+  try {
+    await access(outDir);
+  } catch {
+    prompts.log.error(`Output directory does not exist: ${outDir}`);
+    return;
+  }
+
+  let sourcesString = opts.sources;
+  let testsString = opts.tests;
+  let linter: string | undefined =
+    opts.linter === 'none' ? undefined : opts.linter;
+  let formatter: string | undefined =
+    opts.formatter === 'none' ? undefined : opts.formatter;
+  let testFramework: string | undefined =
+    opts['test-framework'] === 'none' ? undefined : opts['test-framework'];
+  let uiFramework: string | undefined =
+    opts['ui-framework'] === 'none' ? undefined : opts['ui-framework'];
+  let lintCategories: string[] = (opts['lint-categories'] || '')
+    .split(',')
+    .map((s: string) => s.trim())
+    .filter(Boolean);
+  let typescript = opts.typescript === true;
+
+  if (opts.interactive) {
+    const sourcesInput = await prompts.text({
+      message: 'Source globs (comma-separated)',
+      placeholder: 'src',
+      defaultValue: sourcesString
+    });
+
+    if (prompts.isCancel(sourcesInput)) {
+      prompts.cancel('Operation cancelled');
+      return;
+    }
+
+    sourcesString = sourcesInput;
+
+    const testsInput = await prompts.text({
+      message: 'Test globs (comma-separated)',
+      placeholder: 'test',
+      defaultValue: testsString
+    });
+
+    if (prompts.isCancel(testsInput)) {
+      prompts.cancel('Operation cancelled');
+      return;
+    }
+
+    testsString = testsInput;
+
+    const linterInput = await prompts.select({
+      message: 'Choose a linter',
+      options: toSelectOptions(LINTERS, true),
+      initialValue: linter
+    });
+
+    if (prompts.isCancel(linterInput)) {
+      prompts.cancel('Operation cancelled');
+      return;
+    }
+
+    linter = linterInput;
+
+    if (linter !== undefined) {
+      const lintCategoriesInput = await prompts.multiselect({
+        message: 'Choose lint categories',
+        options: Object.entries<string>(LINT_CATEGORIES).map(
+          ([value, label]) => ({
+            value,
+            label
+          })
+        ),
+        required: false
+      });
+
+      if (prompts.isCancel(lintCategoriesInput)) {
+        prompts.cancel('Operation cancelled');
+        return;
+      }
+
+      lintCategories = lintCategoriesInput;
+    }
+
+    const formatterInput = await prompts.select({
+      message: 'Choose a formatter',
+      options: toSelectOptions(FORMATTERS, true),
+      initialValue: formatter
+    });
+
+    if (prompts.isCancel(formatterInput)) {
+      prompts.cancel('Operation cancelled');
+      return;
+    }
+
+    formatter = formatterInput;
+
+    const testFrameworkInput = await prompts.select({
+      message: 'Choose a test framework',
+      options: toSelectOptions(TEST_FRAMEWORKS, true),
+      initialValue: testFramework
+    });
+
+    if (prompts.isCancel(testFrameworkInput)) {
+      prompts.cancel('Operation cancelled');
+      return;
+    }
+
+    testFramework = testFrameworkInput;
+
+    const uiFrameworkInput = await prompts.select({
+      message: 'Choose a UI framework',
+      options: toSelectOptions(UI_FRAMEWORKS, true),
+      initialValue: uiFramework
+    });
+
+    if (prompts.isCancel(uiFrameworkInput)) {
+      prompts.cancel('Operation cancelled');
+      return;
+    }
+
+    uiFramework = uiFrameworkInput;
+
+    const typescriptInput = await prompts.select({
+      message: 'Use TypeScript?',
+      options: [
+        {value: true, label: 'Yes'},
+        {value: false, label: 'No'}
+      ],
+      initialValue: typescript
+    });
+
+    if (prompts.isCancel(typescriptInput)) {
+      prompts.cancel('Operation cancelled');
+      return;
+    }
+
+    typescript = typescriptInput;
+  }
+
+  if (linter !== undefined && !isValidOption(linter, LINTERS)) {
+    prompts.log.error(
+      `Invalid linter: ${linter}. Valid options: ${Object.keys(LINTERS).join(', ')}`
+    );
+    return;
+  }
+
+  if (formatter !== undefined && !isValidOption(formatter, FORMATTERS)) {
+    prompts.log.error(
+      `Invalid formatter: ${formatter}. Valid options: ${Object.keys(FORMATTERS).join(', ')}`
+    );
+    return;
+  }
+
+  if (
+    testFramework !== undefined &&
+    !isValidOption(testFramework, TEST_FRAMEWORKS)
+  ) {
+    prompts.log.error(
+      `Invalid test framework: ${testFramework}. Valid options: ${Object.keys(TEST_FRAMEWORKS).join(', ')}`
+    );
+    return;
+  }
+
+  if (uiFramework !== undefined && !isValidOption(uiFramework, UI_FRAMEWORKS)) {
+    prompts.log.error(
+      `Invalid UI framework: ${uiFramework}. Valid options: ${Object.keys(UI_FRAMEWORKS).join(', ')}`
+    );
+    return;
+  }
+
+  for (const category of lintCategories) {
+    if (!isValidOption(category, LINT_CATEGORIES)) {
+      prompts.log.error(
+        `Invalid lint category: ${category}. Valid options: ${Object.keys(LINT_CATEGORIES).join(', ')}`
+      );
+      return;
+    }
+  }
+
+  const sources = sourcesString
+    ?.split(',')
+    .map((s: string) => s.trim())
+    .filter(Boolean);
+  const tests = testsString
+    ?.split(',')
+    .map((s: string) => s.trim())
+    .filter(Boolean);
+
+  if (sources === undefined || sources.length === 0) {
+    prompts.log.error('At least one source glob is required');
+    return;
+  }
+
+  if (tests === undefined || tests.length === 0) {
+    prompts.log.error('At least one test glob is required');
+    return;
+  }
+
+  const config: Config = {
+    sources,
+    tests,
+    typescript
+  };
+
+  if (linter !== undefined) {
+    config.linter = linter;
+  }
+
+  if (formatter !== undefined) {
+    config.formatter = formatter;
+  }
+
+  if (testFramework !== undefined) {
+    config.testFramework = testFramework;
+  }
+
+  if (uiFramework !== undefined) {
+    config.uiFramework = uiFramework;
+  }
+
+  if (lintCategories.length > 0) {
+    config.lintConfig = {
+      categories: lintCategories as LintCategory[]
+    };
+  }
+
+  const context = new ConfiguratorContext(config, outDir);
+
+  const spinner = prompts.spinner();
+  spinner.start('Generating configuration files...');
+  await execute(context);
+  spinner.stop('Configuration files generated successfully!');
+
+  prompts.outro(
+    `All done! Your configuration files are ready in ${styleText(['bgGray'], outDir)} 🚀`
+  );
+}
+
 export function cli(): void {
   const prog = sade('configurator <outDir>', true);
 
@@ -105,213 +370,14 @@ export function cli(): void {
       'UI framework (react, vue, svelte, lit, angular)',
       'svelte'
     )
+    .option(
+      '--lint-categories',
+      'Lint categories (correctness, performance, modernization)',
+      ''
+    )
     .option('--typescript', 'Use TypeScript', false)
     .option('--interactive', 'Run in interactive mode', false)
-    .action(async (outDir, opts) => {
-      prompts.intro('Configurator');
-
-      if (!outDir) {
-        prompts.log.error('Output directory is required');
-        return;
-      }
-
-      try {
-        await access(outDir);
-      } catch {
-        prompts.log.error(`Output directory does not exist: ${outDir}`);
-        return;
-      }
-
-      let sourcesString = opts.sources;
-      let testsString = opts.tests;
-      let linter: string | undefined = opts.linter;
-      let formatter: string | undefined = opts.formatter;
-      let testFramework: string | undefined = opts['test-framework'];
-      let uiFramework: string | undefined = opts['ui-framework'];
-      let typescript = opts.typescript;
-
-      if (opts.interactive) {
-        const sourcesInput = await prompts.text({
-          message: 'Source globs (comma-separated)',
-          placeholder: 'src',
-          defaultValue: sourcesString
-        });
-
-        if (prompts.isCancel(sourcesInput)) {
-          prompts.cancel('Operation cancelled');
-          return;
-        }
-
-        sourcesString = sourcesInput;
-
-        const testsInput = await prompts.text({
-          message: 'Test globs (comma-separated)',
-          placeholder: 'test',
-          defaultValue: testsString
-        });
-
-        if (prompts.isCancel(testsInput)) {
-          prompts.cancel('Operation cancelled');
-          return;
-        }
-
-        testsString = testsInput;
-
-        const linterInput = await prompts.select({
-          message: 'Choose a linter',
-          options: toSelectOptions(LINTERS, true),
-          initialValue: linter
-        });
-
-        if (prompts.isCancel(linterInput)) {
-          prompts.cancel('Operation cancelled');
-          return;
-        }
-
-        linter = linterInput;
-
-        const formatterInput = await prompts.select({
-          message: 'Choose a formatter',
-          options: toSelectOptions(FORMATTERS, true),
-          initialValue: formatter
-        });
-
-        if (prompts.isCancel(formatterInput)) {
-          prompts.cancel('Operation cancelled');
-          return;
-        }
-
-        formatter = formatterInput;
-
-        const testFrameworkInput = await prompts.select({
-          message: 'Choose a test framework',
-          options: toSelectOptions(TEST_FRAMEWORKS, true),
-          initialValue: testFramework
-        });
-
-        if (prompts.isCancel(testFrameworkInput)) {
-          prompts.cancel('Operation cancelled');
-          return;
-        }
-
-        testFramework = testFrameworkInput;
-
-        const uiFrameworkInput = await prompts.select({
-          message: 'Choose a UI framework',
-          options: toSelectOptions(UI_FRAMEWORKS, true),
-          initialValue: uiFramework
-        });
-
-        if (prompts.isCancel(uiFrameworkInput)) {
-          prompts.cancel('Operation cancelled');
-          return;
-        }
-
-        uiFramework = uiFrameworkInput;
-
-        const typescriptInput = await prompts.select({
-          message: 'Use TypeScript?',
-          options: [
-            {value: true, label: 'Yes'},
-            {value: false, label: 'No'}
-          ],
-          initialValue: typescript
-        });
-
-        if (prompts.isCancel(typescriptInput)) {
-          prompts.cancel('Operation cancelled');
-          return;
-        }
-
-        typescript = typescriptInput;
-      }
-
-      if (linter !== undefined && !isValidOption(linter, LINTERS)) {
-        prompts.log.error(
-          `Invalid linter: ${linter}. Valid options: ${Object.keys(LINTERS).join(', ')}`
-        );
-        return;
-      }
-
-      if (formatter !== undefined && !isValidOption(formatter, FORMATTERS)) {
-        prompts.log.error(
-          `Invalid formatter: ${formatter}. Valid options: ${Object.keys(FORMATTERS).join(', ')}`
-        );
-        return;
-      }
-
-      if (
-        testFramework !== undefined &&
-        !isValidOption(testFramework, TEST_FRAMEWORKS)
-      ) {
-        prompts.log.error(
-          `Invalid test framework: ${testFramework}. Valid options: ${Object.keys(TEST_FRAMEWORKS).join(', ')}`
-        );
-        return;
-      }
-
-      if (
-        uiFramework !== undefined &&
-        !isValidOption(uiFramework, UI_FRAMEWORKS)
-      ) {
-        prompts.log.error(
-          `Invalid UI framework: ${uiFramework}. Valid options: ${Object.keys(UI_FRAMEWORKS).join(', ')}`
-        );
-        return;
-      }
-
-      const sources = sourcesString
-        .split(',')
-        .map((s: string) => s.trim())
-        .filter(Boolean);
-      const tests = testsString
-        .split(',')
-        .map((s: string) => s.trim())
-        .filter(Boolean);
-
-      if (sources.length === 0) {
-        prompts.log.error('At least one source glob is required');
-        return;
-      }
-
-      if (tests.length === 0) {
-        prompts.log.error('At least one test glob is required');
-        return;
-      }
-
-      const config: Config = {
-        sources,
-        tests,
-        typescript
-      };
-
-      if (linter !== undefined) {
-        config.linter = linter;
-      }
-
-      if (formatter !== undefined) {
-        config.formatter = formatter;
-      }
-
-      if (testFramework !== undefined) {
-        config.testFramework = testFramework;
-      }
-
-      if (uiFramework !== undefined) {
-        config.uiFramework = uiFramework;
-      }
-
-      const context = new ConfiguratorContext(config, outDir);
-
-      const spinner = prompts.spinner();
-      spinner.start('Generating configuration files...');
-      await execute(context);
-      spinner.stop('Configuration files generated successfully!');
-
-      prompts.outro(
-        `All done! Your configuration files are ready in ${styleText(['bgGray'], outDir)} 🚀`
-      );
-    });
+    .action(handler);
 
   prog.parse(process.argv);
 }
