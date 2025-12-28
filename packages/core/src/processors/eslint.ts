@@ -15,6 +15,22 @@ const createAngularConfig = (): string => {
   }`;
 };
 
+const createTestConfig = (context: Context, testGlobals: string[]): string => {
+  if (testGlobals.length === 0) {
+    return '';
+  }
+
+  return `
+  {
+    files: ${JSON.stringify(context.config.tests)},
+    languageOptions: {
+      globals: {
+        ${testGlobals.join(',\n        ')}
+      }
+    }
+  }`;
+};
+
 const createSvelteConfig = (context: Context): string => {
   return `
   {
@@ -46,6 +62,7 @@ const createESLintConfig = (context: Context): string => {
   const extendsList: string[] = ['plugin:js/recommended'];
   const plugins: Array<[string, string]> = [['js', '']];
   const globals: string[] = [];
+  const testGlobals: string[] = [];
   const uiFramework = context.config.uiFramework;
   const extraConfigs: string[] = [];
   if (context.config.typescript) {
@@ -101,7 +118,7 @@ const createESLintConfig = (context: Context): string => {
       // TODO (jg): maybe a vitest lint plugin?
       break;
     case 'mocha':
-      globals.push('...globals.mocha');
+      testGlobals.push('...globals.mocha');
       break;
   }
 
@@ -124,6 +141,7 @@ const createESLintConfig = (context: Context): string => {
 
     // TODO (jg): add more category based plugins/rules here
   }
+  extraConfigs.push(createTestConfig(context, testGlobals));
   const pluginsString = plugins
     .map(([name, symbol]) => (symbol ? `${name}: ${symbol}` : name))
     .join(',\n      ');
