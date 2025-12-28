@@ -1,23 +1,23 @@
-interface SelectOption {
-  value: string;
+interface SelectOption<T extends string = string> {
+  value: T;
   label: string;
 }
 
-interface SelectProps {
+interface SelectProps<T extends string = string> {
   label: string;
-  value: string;
-  onChange: (value: string) => void;
-  options: SelectOption[];
+  value: T | 'none';
+  onChange: (value: T | 'none') => void;
+  options: SelectOption<T>[];
   includeNone?: boolean;
 }
 
-export function Select({
+export function Select<T extends string = string>({
   label,
   value,
   onChange,
   options,
   includeNone = false
-}: SelectProps) {
+}: SelectProps<T>) {
   const allOptions = includeNone
     ? [{value: 'none', label: 'None'}, ...options]
     : options;
@@ -28,7 +28,9 @@ export function Select({
       <select
         class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition bg-white"
         value={value}
-        onChange={(e) => onChange((e.target as HTMLSelectElement).value)}
+        onChange={(e) =>
+          onChange((e.target as HTMLSelectElement).value as T | 'none')
+        }
       >
         {allOptions.map((option) => (
           <option key={option.value} value={option.value}>

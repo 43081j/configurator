@@ -1,22 +1,22 @@
-interface CheckboxOption {
-  value: string;
+interface CheckboxOption<T extends string = string> {
+  value: T;
   label: string;
 }
 
-interface CheckboxGroupProps {
+interface CheckboxGroupProps<T extends string = string> {
   label: string;
-  value: string[];
-  onChange: (value: string[]) => void;
-  options: CheckboxOption[];
+  value: T[];
+  onChange: (value: T[]) => void;
+  options: CheckboxOption<T>[];
 }
 
-export function CheckboxGroup({
+export function CheckboxGroup<T extends string = string>({
   label,
   value,
   onChange,
   options
-}: CheckboxGroupProps) {
-  const handleToggle = (optionValue: string) => {
+}: CheckboxGroupProps<T>) {
+  const handleToggle = (optionValue: T) => {
     if (value.includes(optionValue)) {
       onChange(value.filter((v) => v !== optionValue));
     } else {
