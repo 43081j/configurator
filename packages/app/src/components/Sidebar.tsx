@@ -48,7 +48,10 @@ export function Sidebar() {
     <aside class="w-96 h-screen bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
       <div class="px-6 py-6 border-b border-gray-200 bg-gray-50">
         <h1 class="text-2xl font-bold text-gray-900 tracking-tight">
-          Configurator
+          <a href="https://github.com/43081j" class="shine-link">
+            @43081j
+          </a>
+          's Configurator
         </h1>
         <p class="text-sm text-gray-600 mt-1">Configure your dev tools</p>
       </div>
