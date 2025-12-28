@@ -2,6 +2,7 @@ import {useEffect, useState} from 'preact/hooks';
 import {execute} from '@43081j/configurator-core';
 import type {FileInfo} from '@43081j/configurator-core';
 import {config} from '../store/config.js';
+import {activeTab} from '../store/ui.js';
 import {SummaryTab} from './SummaryTab.js';
 import {FileTab} from './FileTab.js';
 
@@ -17,7 +18,6 @@ export function ContentPanel() {
     dependencies: new Map(),
     devDependencies: new Map()
   });
-  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
     const generateContent = async () => {
@@ -39,7 +39,7 @@ export function ContentPanel() {
       });
 
       setContent({files, dependencies, devDependencies});
-      setActiveTab(0);
+      activeTab.value = 0;
     };
 
     generateContent();
@@ -53,9 +53,9 @@ export function ContentPanel() {
         {tabs.map((tab, index) => (
           <button
             key={tab}
-            onClick={() => setActiveTab(index)}
+            onClick={() => (activeTab.value = index)}
             class={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-              activeTab === index
+              activeTab.value === index
                 ? 'border-blue-600 text-blue-600'
                 : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
             }`}
@@ -66,14 +66,14 @@ export function ContentPanel() {
       </div>
 
       <div class="flex-1 overflow-auto p-6">
-        {activeTab === 0 ? (
+        {activeTab.value === 0 ? (
           <SummaryTab
             files={content.files}
             dependencies={content.dependencies}
             devDependencies={content.devDependencies}
           />
         ) : (
-          <FileTab file={content.files[activeTab - 1]} />
+          <FileTab file={content.files[activeTab.value - 1]} />
         )}
       </div>
     </div>

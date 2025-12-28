@@ -16,10 +16,6 @@ const createAngularConfig = (): string => {
 };
 
 const createTestConfig = (context: Context, testGlobals: string[]): string => {
-  if (testGlobals.length === 0) {
-    return '';
-  }
-
   return `
   {
     files: ${JSON.stringify(context.config.tests)},
@@ -141,7 +137,9 @@ const createESLintConfig = (context: Context): string => {
 
     // TODO (jg): add more category based plugins/rules here
   }
-  extraConfigs.push(createTestConfig(context, testGlobals));
+  if (testGlobals.length > 0) {
+    extraConfigs.push(createTestConfig(context, testGlobals));
+  }
   const pluginsString = plugins
     .map(([name, symbol]) => (symbol ? `${name}: ${symbol}` : name))
     .join(',\n      ');
@@ -149,6 +147,8 @@ const createESLintConfig = (context: Context): string => {
   if (globals.length > 0) {
     imports.push(`import globals from 'globals';`);
   }
+  const extraConfigsString =
+    extraConfigs.length > 0 ? `,${extraConfigs.join(',')}` : '';
   return `
 ${imports.join('\n')}
 
@@ -168,7 +168,7 @@ export default defineConfig([
       ${pluginsString}
     },
     extends: ${stringifyIndented(extendsList, 4)}
-  }${extraConfigs.length > 0 ? `,${extraConfigs.join('\n')}` : ''}
+  }${extraConfigsString}
 ];
   `.trim();
 };

@@ -1,5 +1,7 @@
 import type {FileInfo} from '@43081j/configurator-core';
 import {PackageInstall} from './PackageInstall.js';
+import {FileTree} from './FileTree.js';
+import {activeTab} from '../store/ui.js';
 
 export interface SummaryTabProps {
   files: FileInfo[];
@@ -12,6 +14,12 @@ export function SummaryTab({
   dependencies,
   devDependencies
 }: SummaryTabProps) {
+  const handleFileClick = (path: string) => {
+    const index = files.findIndex((file) => file.name === path);
+    if (index !== -1) {
+      activeTab.value = index + 1;
+    }
+  };
   const depsArray = Array.from(dependencies.entries()).map(
     ([name, version]) => `${name}@${version}`
   );
@@ -28,13 +36,7 @@ export function SummaryTab({
         {files.length === 0 ? (
           <p class="text-gray-500 text-sm">No files generated</p>
         ) : (
-          <ul class="list-disc list-inside space-y-1">
-            {files.map((file) => (
-              <li key={file.name} class="text-sm text-gray-700">
-                <span class="font-mono">{file.name}</span>
-              </li>
-            ))}
-          </ul>
+          <FileTree files={files} onFileClick={handleFileClick} />
         )}
       </section>
 
