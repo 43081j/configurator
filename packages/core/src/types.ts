@@ -50,3 +50,20 @@ export interface OxlintConfig extends OverlintConfigBase {
   categories?: Record<string, string>;
   ignorePatterns?: string[];
 }
+
+export interface PrettierConfig {
+  plugins?: string[];
+  bracketSpacing: boolean;
+  printWidth: number;
+  semi: boolean;
+  singleQuote: boolean;
+  tabWidth: number;
+  trailingComma: 'none' | 'es5' | 'all';
+  useTabs: boolean;
+  arrowParens: 'avoid' | 'always';
+  parser?: string;
+  overrides?: Array<{
+    files: string | string[];
+    options: Partial<PrettierConfig>;
+  }>;
+}
