@@ -38,7 +38,7 @@ function buildTree(files: FileInfo[]): TreeNodeData {
 
 export interface FileTreeProps {
   files: FileInfo[];
-  onFileClick?: (path: string) => void;
+  onFileClick: ((path: string) => void) | undefined;
 }
 
 export function FileTree({files, onFileClick}: FileTreeProps) {
