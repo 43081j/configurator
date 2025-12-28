@@ -91,7 +91,7 @@ export const processor: Processor = async (context) => {
     categories
   };
 
-  context.emitFile({
+  await context.emitFile({
     name: '.oxlintrc.json',
     contents: config
   });

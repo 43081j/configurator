@@ -3,7 +3,7 @@
     "outDir": "./dist",
     "module": "node18",
     "target": "esnext",
-    "types": [],
+    "types": ["node"],
     "sourceMap": false,
     "declaration": true,
     "declarationMap": false,

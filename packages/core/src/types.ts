@@ -30,7 +30,7 @@ export interface FileInfo {
 
 export interface Context {
   config: Config;
-  emitFile: (file: FileInfo) => void;
+  emitFile: (file: FileInfo) => Promise<void>;
 }
 
 export type Processor = (context: Context) => Promise<void>;

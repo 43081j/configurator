@@ -21,6 +21,7 @@
   "type": "module",
   "private": true,
   "workspaces": [
+    "packages/core",
     "packages/*"
   ],
   "scripts": {

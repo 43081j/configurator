@@ -4,10 +4,19 @@
   "description": "Devtool configurator CLI",
   "type": "module",
   "main": "./src/main.ts",
+  "bin": {
+    "configurator-cli": "bin.mjs"
+  },
   "scripts": {
     "build": "tsgo"
   },
   "devDependencies": {
+    "@types/node": "^25.0.3",
     "@typescript/native-preview": "^7.0.0-dev.20251227.1"
+  },
+  "dependencies": {
+    "@43081j/configurator-core": "^0.0.1",
+    "@clack/prompts": "^1.0.0-alpha.9",
+    "sade": "^1.8.1"
   }
 }
