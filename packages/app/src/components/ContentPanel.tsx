@@ -58,10 +58,10 @@ export function ContentPanel() {
 
   return (
     <div class="flex flex-col h-full">
-      <div class="flex items-center border-b border-gray-200 bg-white">
+      <div class="flex items-center border-b border-gray-200 bg-white overflow-x-auto">
         <button
           onClick={() => (sidebarOpen.value = true)}
-          class="md:hidden p-2 ml-2 mr-2 hover:bg-gray-100 rounded-lg transition-colors"
+          class="md:hidden sticky left-0 p-2 ml-2 mr-2 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0 bg-white z-10"
           aria-label="Open menu"
         >
           <div class="i-material-symbols-menu text-2xl text-gray-700" />
@@ -71,7 +71,7 @@ export function ContentPanel() {
           <button
             key={tab.id}
             onClick={() => (activeTab.value = tab.id)}
-            class={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+            class={`px-4 py-3 text-sm font-medium border-b-2 transition-colors flex-shrink-0 whitespace-nowrap ${
               activeTab.value === tab.id
                 ? 'border-blue-600 text-blue-600'
                 : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
