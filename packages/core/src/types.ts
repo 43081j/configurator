@@ -80,3 +80,18 @@ export interface OxfmtConfig {
   semicolons?: 'always' | 'as_needed';
   trailing_commas?: 'none' | 'es5' | 'all';
 }
+
+export interface MochaConfig {
+  diff?: boolean;
+  extension?: string[];
+  require?: string;
+  loader?: string;
+  package?: string;
+  reporter?: string;
+  slow?: string | number;
+  timeout?: string | number;
+  ui?: string;
+  'watch-files'?: string[];
+  'watch-ignore'?: string[];
+  spec?: string[];
+}
