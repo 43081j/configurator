@@ -1,0 +1,19 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`main > execute > should process context without errors 1`] = `
+{
+  ".oxlintrc.json": {
+    "categories": {
+      "correctness": "error",
+      "suspicious": "error",
+    },
+    "env": {},
+    "plugins": [
+      "eslint",
+      "oxc",
+      "typescript",
+    ],
+    "rules": {},
+  },
+}
+`;
