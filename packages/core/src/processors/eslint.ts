@@ -141,7 +141,9 @@ const createESLintConfig = (context: Context): string => {
     extraConfigs.push(createTestConfig(context, testGlobals));
   }
   const pluginsString = plugins
-    .map(([name, symbol]) => (symbol ? `${name}: ${symbol}` : name))
+    .map(([name, symbol]) =>
+      symbol ? `${JSON.stringify(name)}: ${symbol}` : JSON.stringify(name)
+    )
     .join(',\n      ');
   const globalsString = globals.join(',\n        ');
   if (globals.length > 0) {
