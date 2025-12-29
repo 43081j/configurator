@@ -44,6 +44,8 @@ export const processor: Processor = async (context) => {
       plugins.push('vue');
       break;
     case 'svelte':
+      // TODO (jg): this is probably wrong given the svelte plugin
+      // needs a custom parser. afaik oxlint doesn't support that yet.
       plugins.push('eslint-plugin-svelte');
       context.addDevDependency('eslint-plugin-svelte', '^3.13.1');
       break;

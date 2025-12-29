@@ -1,0 +1,345 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`eslint processor > should add angular plugin if ui framework is angular 1`] = `
+{
+  "eslint.config.mjs": "import {defineConfig} from 'eslint/config';
+import js from '@eslint/js';
+import angular from 'angular-eslint';
+import globals from 'globals';
+
+export default defineConfig([
+  {
+    files: ["src/**/*.ts", "src/**/*.test.ts"],
+    languageOptions: {
+      globals: {
+        ...globals.browser
+      }
+    },
+    plugins: {
+      js,
+      angular
+    },
+    extends: [
+      "js/recommended",
+      "angular/tsRecommended"
+    ]
+  },
+  {
+    files: ['**/*.html'],
+    extends: ['angular/templateRecommended']
+  }
+];",
+}
+`;
+
+exports[`eslint processor > should add browser globals if ui framework is set 1`] = `
+{
+  "eslint.config.mjs": "import {defineConfig} from 'eslint/config';
+import js from '@eslint/js';
+import lit from 'eslint-plugin-lit';
+import globals from 'globals';
+
+export default defineConfig([
+  {
+    files: ["src/**/*.ts", "src/**/*.test.ts"],
+    languageOptions: {
+      globals: {
+        ...globals.browser
+      }
+    },
+    plugins: {
+      js
+    },
+    extends: [
+      "js/recommended",
+      "lit/flat/recommended"
+    ]
+  }
+];",
+}
+`;
+
+exports[`eslint processor > should add e18e plugin if lintConfig includes modernization 1`] = `
+{
+  "eslint.config.mjs": "import {defineConfig} from 'eslint/config';
+import js from '@eslint/js';
+import e18e from '@e18e/eslint-plugin';
+
+export default defineConfig([
+  {
+    files: ["src/**/*.ts", "src/**/*.test.ts"],
+    languageOptions: {
+    },
+    plugins: {
+      js,
+      e18e
+    },
+    extends: [
+      "js/recommended",
+      "e18e/recommended"
+    ]
+  }
+];",
+}
+`;
+
+exports[`eslint processor > should add e18e plugin if lintConfig includes performance 1`] = `
+{
+  "eslint.config.mjs": "import {defineConfig} from 'eslint/config';
+import js from '@eslint/js';
+import e18e from '@e18e/eslint-plugin';
+
+export default defineConfig([
+  {
+    files: ["src/**/*.ts", "src/**/*.test.ts"],
+    languageOptions: {
+    },
+    plugins: {
+      js,
+      e18e
+    },
+    extends: [
+      "js/recommended",
+      "e18e/recommended"
+    ]
+  }
+];",
+}
+`;
+
+exports[`eslint processor > should add lit plugin if ui framework is lit 1`] = `
+{
+  "eslint.config.mjs": "import {defineConfig} from 'eslint/config';
+import js from '@eslint/js';
+import lit from 'eslint-plugin-lit';
+import globals from 'globals';
+
+export default defineConfig([
+  {
+    files: ["src/**/*.ts", "src/**/*.test.ts"],
+    languageOptions: {
+      globals: {
+        ...globals.browser
+      }
+    },
+    plugins: {
+      js
+    },
+    extends: [
+      "js/recommended",
+      "lit/flat/recommended"
+    ]
+  }
+];",
+}
+`;
+
+exports[`eslint processor > should add mocha globals if test framework is mocha 1`] = `
+{
+  "eslint.config.mjs": "import {defineConfig} from 'eslint/config';
+import js from '@eslint/js';
+
+export default defineConfig([
+  {
+    files: ["src/**/*.ts", "src/**/*.test.ts"],
+    languageOptions: {
+    },
+    plugins: {
+      js
+    },
+    extends: [
+      "js/recommended"
+    ]
+  },
+  {
+    files: ["src/**/*.test.ts"],
+    languageOptions: {
+      globals: {
+        ...globals.mocha
+      }
+    }
+  }
+];",
+}
+`;
+
+exports[`eslint processor > should add react plugin if ui framework is react 1`] = `
+{
+  "eslint.config.mjs": "import {defineConfig} from 'eslint/config';
+import js from '@eslint/js';
+import eslintReact from '@eslint-react/eslint-plugin';
+import globals from 'globals';
+
+export default defineConfig([
+  {
+    files: ["src/**/*.ts", "src/**/*.test.ts"],
+    languageOptions: {
+      globals: {
+        ...globals.browser
+      }
+    },
+    plugins: {
+      js,
+      "@eslint-react": eslintReact
+    },
+    extends: [
+      "js/recommended",
+      "@eslint-react/recommended"
+    ]
+  }
+];",
+}
+`;
+
+exports[`eslint processor > should add svelte plugin if ui framework is svelte 1`] = `
+{
+  "eslint.config.mjs": "import {defineConfig} from 'eslint/config';
+import js from '@eslint/js';
+import svelte from 'eslint-plugin-svelte';
+import svelteConfig from './svelte.config.js';
+import globals from 'globals';
+
+export default defineConfig([
+  {
+    files: ["src/**/*.ts", "src/**/*.test.ts"],
+    languageOptions: {
+      globals: {
+        ...globals.browser
+      }
+    },
+    plugins: {
+      js,
+      svelte
+    },
+    extends: [
+      "js/recommended",
+      "svelte/recommended"
+    ]
+  },
+  {
+    files: ['**/*.svelte', '**/*.svelte.js'],
+    languageOptions: {
+      parserOptions: {
+        svelteConfig
+      }
+    }
+  }
+];",
+}
+`;
+
+exports[`eslint processor > should add svelte plugin with typescript support 1`] = `
+{
+  "eslint.config.mjs": "import {defineConfig} from 'eslint/config';
+import js from '@eslint/js';
+import ts from 'typescript-eslint';
+import svelte from 'eslint-plugin-svelte';
+import svelteConfig from './svelte.config.js';
+import globals from 'globals';
+
+export default defineConfig([
+  {
+    files: ["src/**/*.ts", "src/**/*.test.ts"],
+    languageOptions: {
+      globals: {
+        ...globals.browser
+      }
+    },
+    plugins: {
+      js,
+      ts,
+      svelte
+    },
+    extends: [
+      "js/recommended",
+      "ts/flat/strict",
+      "svelte/recommended"
+    ]
+  },
+  {
+    files: ['**/*.svelte', '**/*.svelte.ts'],
+    languageOptions: {
+      parserOptions: {
+        svelteConfig,
+        projectService: true,
+        extraFileExtensions: ['svelte'],
+        parser: ts.parser
+      }
+    }
+  }
+];",
+}
+`;
+
+exports[`eslint processor > should add typescript support if typescript is true 1`] = `
+{
+  "eslint.config.mjs": "import {defineConfig} from 'eslint/config';
+import js from '@eslint/js';
+import ts from 'typescript-eslint';
+
+export default defineConfig([
+  {
+    files: ["src/**/*.ts", "src/**/*.test.ts"],
+    languageOptions: {
+    },
+    plugins: {
+      js,
+      ts
+    },
+    extends: [
+      "js/recommended",
+      "ts/flat/strict"
+    ]
+  }
+];",
+}
+`;
+
+exports[`eslint processor > should add vue plugin if ui framework is vue 1`] = `
+{
+  "eslint.config.mjs": "import {defineConfig} from 'eslint/config';
+import js from '@eslint/js';
+import vue from 'eslint-plugin-vue';
+import globals from 'globals';
+
+export default defineConfig([
+  {
+    files: ["src/**/*.ts", "src/**/*.test.ts"],
+    languageOptions: {
+      globals: {
+        ...globals.browser
+      }
+    },
+    plugins: {
+      js,
+      vue
+    },
+    extends: [
+      "js/recommended",
+      "vue/flat/recommended"
+    ]
+  }
+];",
+}
+`;
+
+exports[`eslint processor > should emit eslint config and add dependencies 1`] = `
+{
+  "eslint.config.mjs": "import {defineConfig} from 'eslint/config';
+import js from '@eslint/js';
+
+export default defineConfig([
+  {
+    files: ["src/**/*.ts", "src/**/*.test.ts"],
+    languageOptions: {
+    },
+    plugins: {
+      js
+    },
+    extends: [
+      "js/recommended"
+    ]
+  }
+];",
+}
+`;

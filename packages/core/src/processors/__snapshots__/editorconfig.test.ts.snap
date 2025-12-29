@@ -1,0 +1,14 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`editorconfig processor > should emit .editorconfig file 1`] = `
+{
+  ".editorconfig": "root = true
+
+[*]
+end_of_line = lf
+indent_size = 2
+indent_style = space
+trim_trailing_whitespace = true
+insert_final_newline = true",
+}
+`;

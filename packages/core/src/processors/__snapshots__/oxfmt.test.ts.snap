@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`oxfmt processor > should emit oxfmt config file and add dev dependency 1`] = `
+{
+  ".oxfmtrc.jsonc": {
+    "arrowParentheses": "always",
+    "lineWidth": 120,
+    "quoteStyle": "single",
+    "semi": true,
+    "trailingCommas": "none",
+  },
+}
+`;

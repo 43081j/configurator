@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`mocha processor > should add typescript support if typescript is true 1`] = `
+{
+  ".mocharc.json": {
+    "extension": [
+      "ts",
+    ],
+    "loader": "ts-node/esm",
+    "require": "ts-node/register",
+    "spec": [
+      "tests/**/*.test.ts",
+    ],
+  },
+}
+`;
+
+exports[`mocha processor > should emit mocharc and add dependencies 1`] = `
+{
+  ".mocharc.json": {},
+}
+`;
