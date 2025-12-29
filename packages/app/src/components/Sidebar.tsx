@@ -67,7 +67,7 @@ export function Sidebar() {
             class="md:hidden absolute top-4 right-4 p-2 hover:bg-gray-200 rounded-lg transition-colors"
             aria-label="Close menu"
           >
-            <div class="i-material-symbols-close text-xl text-gray-700" />
+            <div class="i-material-symbols-close text-xl text-gray-700"></div>
           </button>
 
           <h1 class="text-2xl font-bold text-gray-900 tracking-tight">
@@ -77,6 +77,16 @@ export function Sidebar() {
             's Configurator
           </h1>
           <p class="text-sm text-gray-600 mt-1">Configure your dev tools</p>
+
+          <a
+            href="https://github.com/43081j/configurator"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 mt-3 px-3 py-1.5 bg-gray-800 hover:bg-gray-900 text-white text-sm font-medium rounded-full transition-colors"
+          >
+            <div class="i-material-symbols-open-in-new text-lg"></div>
+            View on GitHub
+          </a>
         </div>
 
         <div class="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-6">
