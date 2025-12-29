@@ -1,0 +1,195 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`oxlint processor > should add browser env if ui framework is set 1`] = `
+{
+  ".oxlintrc.json": {
+    "categories": {},
+    "env": {
+      "browser": true,
+    },
+    "plugins": [
+      "eslint",
+      "oxc",
+      "eslint-plugin-lit",
+    ],
+    "rules": {
+      "lit/attribute-value-entities": "error",
+      "lit/binding-positions": "error",
+      "lit/no-duplicate-template-bindings": "error",
+      "lit/no-invalid-html": "error",
+      "lit/no-legacy-template-syntax": "error",
+      "lit/no-property-change-update": "error",
+    },
+  },
+}
+`;
+
+exports[`oxlint processor > should add jest plugin if test framework is jest 1`] = `
+{
+  ".oxlintrc.json": {
+    "categories": {},
+    "env": {},
+    "plugins": [
+      "eslint",
+      "oxc",
+      "jest",
+    ],
+    "rules": {},
+  },
+}
+`;
+
+exports[`oxlint processor > should add lit plugin if ui framework is lit 1`] = `
+{
+  ".oxlintrc.json": {
+    "categories": {},
+    "env": {
+      "browser": true,
+    },
+    "plugins": [
+      "eslint",
+      "oxc",
+      "eslint-plugin-lit",
+    ],
+    "rules": {
+      "lit/attribute-value-entities": "error",
+      "lit/binding-positions": "error",
+      "lit/no-duplicate-template-bindings": "error",
+      "lit/no-invalid-html": "error",
+      "lit/no-legacy-template-syntax": "error",
+      "lit/no-property-change-update": "error",
+    },
+  },
+}
+`;
+
+exports[`oxlint processor > should add mocha env if test framework is mocha 1`] = `
+{
+  ".oxlintrc.json": {
+    "categories": {},
+    "env": {
+      "mocha": true,
+    },
+    "plugins": [
+      "eslint",
+      "oxc",
+    ],
+    "rules": {},
+  },
+}
+`;
+
+exports[`oxlint processor > should add react plugin if ui framework is react 1`] = `
+{
+  ".oxlintrc.json": {
+    "categories": {},
+    "env": {
+      "browser": true,
+    },
+    "plugins": [
+      "eslint",
+      "oxc",
+      "react",
+    ],
+    "rules": {},
+  },
+}
+`;
+
+exports[`oxlint processor > should add react-perf plugin if react & perf category enabled 1`] = `
+{
+  ".oxlintrc.json": {
+    "categories": {
+      "perf": "error",
+    },
+    "env": {
+      "browser": true,
+    },
+    "plugins": [
+      "eslint",
+      "oxc",
+      "react",
+      "react-perf",
+    ],
+    "rules": {},
+  },
+}
+`;
+
+exports[`oxlint processor > should add svelte plugin if ui framework is svelte 1`] = `
+{
+  ".oxlintrc.json": {
+    "categories": {},
+    "env": {
+      "browser": true,
+    },
+    "plugins": [
+      "eslint",
+      "oxc",
+      "eslint-plugin-svelte",
+    ],
+    "rules": {},
+  },
+}
+`;
+
+exports[`oxlint processor > should add typescript plugin if typescript is true 1`] = `
+{
+  ".oxlintrc.json": {
+    "categories": {},
+    "env": {},
+    "plugins": [
+      "eslint",
+      "oxc",
+      "typescript",
+    ],
+    "rules": {},
+  },
+}
+`;
+
+exports[`oxlint processor > should add vitest plugin if test framework is vitest 1`] = `
+{
+  ".oxlintrc.json": {
+    "categories": {},
+    "env": {},
+    "plugins": [
+      "eslint",
+      "oxc",
+      "vitest",
+    ],
+    "rules": {},
+  },
+}
+`;
+
+exports[`oxlint processor > should add vue plugin if ui framework is vue 1`] = `
+{
+  ".oxlintrc.json": {
+    "categories": {},
+    "env": {
+      "browser": true,
+    },
+    "plugins": [
+      "eslint",
+      "oxc",
+      "vue",
+    ],
+    "rules": {},
+  },
+}
+`;
+
+exports[`oxlint processor > should emit oxlintrc and add dependencies 1`] = `
+{
+  ".oxlintrc.json": {
+    "categories": {},
+    "env": {},
+    "plugins": [
+      "eslint",
+      "oxc",
+    ],
+    "rules": {},
+  },
+}
+`;

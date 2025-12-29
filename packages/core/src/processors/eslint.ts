@@ -55,7 +55,7 @@ const createESLintConfig = (context: Context): string => {
     ...context.config.sources,
     ...context.config.tests
   ]).replaceAll(/,/g, ', ');
-  const extendsList: string[] = ['plugin:js/recommended'];
+  const extendsList: string[] = ['js/recommended'];
   const plugins: Array<[string, string]> = [['js', '']];
   const globals: string[] = [];
   const testGlobals: string[] = [];
@@ -65,10 +65,11 @@ const createESLintConfig = (context: Context): string => {
     imports.push(`import ts from 'typescript-eslint';`);
     extendsList.push('ts/flat/strict');
     plugins.push(['ts', '']);
+    context.addDevDependency('typescript-eslint', '^8.51.0');
   }
   switch (uiFramework) {
     case 'react': {
-      context.addDependency('@eslint-react/eslint-plugin', '^2.4.0');
+      context.addDevDependency('@eslint-react/eslint-plugin', '^2.4.0');
       imports.push(`import eslintReact from '@eslint-react/eslint-plugin';`);
       if (context.config.typescript) {
         extendsList.push('@eslint-react/recommended-typescript');
@@ -142,7 +143,7 @@ const createESLintConfig = (context: Context): string => {
   }
   const pluginsString = plugins
     .map(([name, symbol]) =>
-      symbol ? `${JSON.stringify(name)}: ${symbol}` : JSON.stringify(name)
+      symbol ? `${JSON.stringify(name)}: ${symbol}` : name
     )
     .join(',\n      ');
   const globalsString = globals.join(',\n        ');
