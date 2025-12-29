@@ -1,13 +1,11 @@
 import type {Processor, OxfmtConfig} from '../types.js';
 
 const defaultOxfmtConfig: OxfmtConfig = {
-  arrow_parentheses: 'always',
-  indent_style: 'space',
-  indent_width: 2,
-  line_width: 120,
-  quote_style: 'single',
+  arrowParentheses: 'always',
+  lineWidth: 120,
+  quoteStyle: 'single',
   semi: true,
-  trailing_commas: 'none'
+  trailingCommas: 'none'
 };
 
 export const processor: Processor = async (context) => {
@@ -22,7 +20,7 @@ export const processor: Processor = async (context) => {
   };
 
   await context.emitFile({
-    name: '.oxfmt.json',
+    name: '.oxfmtrc.jsonc',
     contents: config
   });
 };

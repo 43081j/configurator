@@ -73,14 +73,14 @@ export interface PrettierConfig {
 // TODO (jg): this interface is probably nonsense, oxfmt doesn't publish
 // this type yet it seems. so im just guessing based on the rust source!
 export interface OxfmtConfig {
-  arrow_parentheses?: 'always' | 'as_needed';
-  indent_style?: 'space' | 'tab';
-  indent_width?: number;
-  line_width?: number;
-  quote_style?: 'single' | 'double';
+  arrowParentheses?: 'always' | 'as_needed';
+  indentStyle?: 'space' | 'tab';
+  indentWidth?: number;
+  lineWidth?: number;
+  quoteStyle?: 'single' | 'double';
   semi?: boolean;
   semicolons?: 'always' | 'as_needed';
-  trailing_commas?: 'none' | 'es5' | 'all';
+  trailingCommas?: 'none' | 'es5' | 'all';
 }
 
 export interface MochaConfig {
