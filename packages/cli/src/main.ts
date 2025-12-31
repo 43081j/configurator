@@ -104,6 +104,7 @@ class ConfiguratorContext implements Context {
   #outDir: string;
   #devDependencies: Record<string, string> = {};
   #dependencies: Record<string, string> = {};
+  #packageJSON: Record<string, unknown> = {};
 
   constructor(config: Config, outDir: string) {
     this.config = config;
@@ -126,6 +127,39 @@ class ConfiguratorContext implements Context {
 
   addDependency(packageName: string, version: string): void {
     this.#dependencies[packageName] = version;
+  }
+
+  emitPackageField(name: string, value: unknown): void {
+    const isValuePlainObject =
+      typeof value === 'object' && value !== null && !Array.isArray(value);
+    const currentValue = this.#packageJSON[name];
+    const isCurrentPlainObject =
+      typeof currentValue === 'object' &&
+      currentValue !== null &&
+      !Array.isArray(currentValue);
+
+    if (isValuePlainObject && isCurrentPlainObject) {
+      this.#packageJSON[name] = {
+        ...currentValue,
+        ...value
+      };
+    } else {
+      this.#packageJSON[name] = value;
+    }
+  }
+
+  async finalise(): Promise<void> {
+    const packageJsonPath = join(this.#outDir, 'package.json');
+
+    try {
+      await access(packageJsonPath);
+    } catch {
+      await writeFile(
+        packageJsonPath,
+        JSON.stringify(this.#packageJSON, null, 2),
+        'utf-8'
+      );
+    }
   }
 }
 

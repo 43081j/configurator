@@ -1,66 +1,33 @@
 import {useEffect, useState} from 'preact/hooks';
-import {execute, ConfigValidationError} from '@43081j/configurator-core';
-import type {FileInfo} from '@43081j/configurator-core';
 import {config} from '../store/config.js';
 import {activeTab, sidebarOpen} from '../store/ui.js';
 import {SummaryTab} from './SummaryTab.js';
 import {FileTab} from './FileTab.js';
 import {exportFilesAsTar} from '../utils/export.js';
-
-interface GeneratedContent {
-  files: FileInfo[];
-  dependencies: Map<string, string>;
-  devDependencies: Map<string, string>;
-  error: string | undefined;
-}
+import {generateContent, type GeneratedContent} from '../utils/generate.js';
 
 export function ContentPanel() {
   const [content, setContent] = useState<GeneratedContent>({
     files: [],
     dependencies: new Map(),
     devDependencies: new Map(),
-    error: undefined
+    error: undefined,
+    packageJSON: {}
   });
 
   useEffect(() => {
-    const generateContent = async () => {
-      const files: FileInfo[] = [];
-      const dependencies = new Map<string, string>();
-      const devDependencies = new Map<string, string>();
-      let error: string | undefined;
-
-      try {
-        await execute({
-          config: config.value,
-          emitFile: async (file) => {
-            files.push(file);
-          },
-          addDependency: (name, version) => {
-            dependencies.set(name, version);
-          },
-          addDevDependency: (name, version) => {
-            devDependencies.set(name, version);
-          }
-        });
-      } catch (err) {
-        if (err instanceof ConfigValidationError) {
-          error = err.message;
-        } else {
-          throw err;
-        }
-      }
-
-      setContent({files, dependencies, devDependencies, error});
-      // Reset to summary only if current active tab no longer exists
+    const runGeneration = async () => {
+      const result = await generateContent(config.value);
+      setContent(result);
       if (
         activeTab.value !== 'summary' &&
-        !files.some((file) => file.name === activeTab.value)
+        !result.files.some((file) => file.name === activeTab.value)
       ) {
         activeTab.value = 'summary';
       }
     };
 
-    generateContent();
+    runGeneration();
   }, [config.value]);
 
   const tabs = [

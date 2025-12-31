@@ -21,7 +21,9 @@ function createContext(configOverrides: Partial<Config> = {}): {
     emitFile(file) {
       files[file.name] = file.contents;
       return Promise.resolve();
-    }
+    },
+    emitPackageField: vi.fn(),
+    finalise: vi.fn().mockResolvedValue(undefined)
   };
   return {context, files};
 }
