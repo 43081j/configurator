@@ -6,6 +6,7 @@ describe('oxfmt processor', () => {
   it('should do nothing if formatter is not oxfmt', async () => {
     const context: Context = {
       config: {
+        mainEntryPoint: 'src/main.ts',
         formatter: 'prettier',
         sources: ['src/**/*.ts'],
         tests: ['tests/**/*.test.ts'],
@@ -27,6 +28,7 @@ describe('oxfmt processor', () => {
     const files: Record<string, unknown> = {};
     const context: Context = {
       config: {
+        mainEntryPoint: 'src/main.ts',
         sources: ['src/**/*.ts'],
         tests: ['tests/**/*.test.ts'],
         formatter: 'oxfmt',

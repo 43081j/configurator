@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'preact/hooks';
-import {execute} from '@43081j/configurator-core';
+import {execute, ConfigValidationError} from '@43081j/configurator-core';
 import type {FileInfo} from '@43081j/configurator-core';
 import {config} from '../store/config.js';
 import {activeTab, sidebarOpen} from '../store/ui.js';
@@ -11,13 +11,15 @@ interface GeneratedContent {
   files: FileInfo[];
   dependencies: Map<string, string>;
   devDependencies: Map<string, string>;
+  error: string | undefined;
 }
 
 export function ContentPanel() {
   const [content, setContent] = useState<GeneratedContent>({
     files: [],
     dependencies: new Map(),
-    devDependencies: new Map()
+    devDependencies: new Map(),
+    error: undefined
   });
 
   useEffect(() => {
@@ -25,21 +27,30 @@ export function ContentPanel() {
       const files: FileInfo[] = [];
       const dependencies = new Map<string, string>();
       const devDependencies = new Map<string, string>();
+      let error: string | undefined;
 
-      await execute({
-        config: config.value,
-        emitFile: async (file) => {
-          files.push(file);
-        },
-        addDependency: (name, version) => {
-          dependencies.set(name, version);
-        },
-        addDevDependency: (name, version) => {
-          devDependencies.set(name, version);
+      try {
+        await execute({
+          config: config.value,
+          emitFile: async (file) => {
+            files.push(file);
+          },
+          addDependency: (name, version) => {
+            dependencies.set(name, version);
+          },
+          addDevDependency: (name, version) => {
+            devDependencies.set(name, version);
+          }
+        });
+      } catch (err) {
+        if (err instanceof ConfigValidationError) {
+          error = err.message;
+        } else {
+          throw err;
         }
-      });
+      }
 
-      setContent({files, dependencies, devDependencies});
+      setContent({files, dependencies, devDependencies, error});
       // Reset to summary only if current active tab no longer exists
       if (
         activeTab.value !== 'summary' &&
@@ -100,6 +111,7 @@ export function ContentPanel() {
             files={content.files}
             dependencies={content.dependencies}
             devDependencies={content.devDependencies}
+            error={content.error}
           />
         ) : (
           <FileTab

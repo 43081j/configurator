@@ -5,6 +5,7 @@ import {join, dirname} from 'node:path';
 import {styleText} from 'node:util';
 import {
   execute,
+  ConfigValidationError,
   type Config,
   type Context,
   type FileInfo,
@@ -58,6 +59,7 @@ const LINT_CATEGORIES: Record<LintCategory, string> = {
 };
 
 interface Options {
+  'main-entry-point'?: string;
   sources?: string;
   tests?: string;
   linter?: string;
@@ -142,6 +144,7 @@ async function handler(outDir: string, opts: Options): Promise<void> {
     return;
   }
 
+  let mainEntryPoint = opts['main-entry-point'] || defaults.mainEntryPoint;
   let sourcesString = opts.sources;
   let testsString = opts.tests;
   let linter: string | undefined =
@@ -161,6 +164,19 @@ async function handler(outDir: string, opts: Options): Promise<void> {
   let typescript = opts.typescript === true;
 
   if (opts.interactive) {
+    const mainEntryPointInput = await prompts.text({
+      message: 'Main entry point',
+      placeholder: 'src/main.ts',
+      defaultValue: mainEntryPoint
+    });
+
+    if (prompts.isCancel(mainEntryPointInput)) {
+      prompts.cancel('Operation cancelled');
+      return;
+    }
+
+    mainEntryPoint = mainEntryPointInput;
+
     const sourcesInput = await prompts.text({
       message: 'Source globs (comma-separated)',
       placeholder: 'src',
@@ -356,6 +372,7 @@ async function handler(outDir: string, opts: Options): Promise<void> {
   }
 
   const config: Config = {
+    mainEntryPoint,
     sources,
     tests,
     typescript
@@ -391,18 +408,31 @@ async function handler(outDir: string, opts: Options): Promise<void> {
 
   const spinner = prompts.spinner();
   spinner.start('Generating configuration files...');
-  await execute(context);
-  spinner.stop('Configuration files generated successfully!');
 
-  prompts.outro(
-    `All done! Your configuration files are ready in ${styleText(['bgGray'], outDir)} 🚀`
-  );
+  try {
+    await execute(context);
+    spinner.stop('Configuration files generated successfully!');
+
+    prompts.outro(
+      `All done! Your configuration files are ready in ${styleText(['bgGray'], outDir)} 🚀`
+    );
+  } catch (err) {
+    spinner.stop('Failed to generate configuration files');
+
+    if (err instanceof ConfigValidationError) {
+      prompts.log.error(err.message);
+      process.exit(1);
+    } else {
+      throw err;
+    }
+  }
 }
 
 export function cli(): void {
   const prog = sade('configurator <outDir>', true);
 
   prog
+    .option('--main-entry-point', 'Main entry point', defaults.mainEntryPoint)
     .option('--sources', 'Source globs', defaults.sources.join(', '))
     .option('--tests', 'Test globs', defaults.tests.join(', '))
     .option(

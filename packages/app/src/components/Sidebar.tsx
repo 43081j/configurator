@@ -7,6 +7,7 @@ import type {
   LintCategory
 } from '@43081j/configurator-core';
 import {TagInput} from './TagInput.js';
+import {TextInput} from './TextInput.js';
 import {Select} from './Select.js';
 import {CheckboxGroup} from './CheckboxGroup.js';
 import {RadioGroup} from './RadioGroup.js';
@@ -99,6 +100,13 @@ export function Sidebar() {
         </div>
 
         <div class="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-6">
+          <TextInput
+            label="Main Entry Point"
+            value={store.mainEntryPoint.value}
+            onChange={(v) => (store.mainEntryPoint.value = v)}
+            placeholder="src/main.ts"
+          />
+
           <TagInput
             label="Source Globs"
             value={store.sources.value}

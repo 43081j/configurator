@@ -9,6 +9,7 @@ function createContext(configOverrides: Partial<Config> = {}): {
   const files: Record<string, unknown> = {};
   const context: Context = {
     config: {
+      mainEntryPoint: 'src/main.ts',
       sources: ['src/**/*.ts'],
       tests: ['src/**/*.test.ts'],
       linter: 'oxlint',
