@@ -10,6 +10,7 @@ import type {
   LintCategory
 } from '@43081j/configurator-core';
 
+export const mainEntryPoint = signal<string>(defaults.mainEntryPoint);
 export const sources = signal<string[]>(defaults.sources);
 export const tests = signal<string[]>(defaults.tests);
 export const linter = signal<Linter | 'none'>(defaults.linter ?? 'none');
@@ -30,6 +31,7 @@ export const typescript = signal<boolean>(defaults.typescript);
 
 export const config = computed<Config>(() => {
   const cfg: Config = {
+    mainEntryPoint: mainEntryPoint.value,
     sources: sources.value,
     tests: tests.value,
     typescript: typescript.value

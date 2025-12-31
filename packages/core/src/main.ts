@@ -7,6 +7,7 @@ import {processor as mochaProcessor} from './processors/mocha.js';
 import {processor as eslintProcessor} from './processors/eslint.js';
 import {processor as biomeProcessor} from './processors/biome.js';
 import type {Context, Processor, Config} from './types.js';
+import {ConfigValidationError} from './types.js';
 
 export * from './types.js';
 
@@ -21,13 +22,30 @@ const processors = new Set<Processor>([
   biomeProcessor
 ]);
 
+const bundlersRequiringEntryPoint = ['tsdown', 'zshy', 'rolldown', 'esbuild'];
+
+function validateConfig(config: Config): void {
+  if (
+    config.bundler &&
+    bundlersRequiringEntryPoint.includes(config.bundler) &&
+    !config.mainEntryPoint.trim()
+  ) {
+    throw new ConfigValidationError(
+      `Bundler "${config.bundler}" requires a main entry point to be specified`
+    );
+  }
+}
+
 export async function execute(context: Context): Promise<void> {
+  validateConfig(context.config);
+
   for (const processor of processors) {
     await processor(context);
   }
 }
 
 export const defaults: Config = {
+  mainEntryPoint: 'src/main.ts',
   tests: ['src/**/*.test.ts'],
   sources: ['src/**/*.ts'],
   linter: 'eslint',

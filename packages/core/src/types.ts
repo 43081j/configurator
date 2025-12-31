@@ -15,6 +15,7 @@ export interface LintConfig {
 }
 
 export interface Config {
+  mainEntryPoint: string;
   sources: string[];
   tests: string[];
   linter?: Linter;
@@ -39,6 +40,13 @@ export interface Context {
 }
 
 export type Processor = (context: Context) => Promise<void>;
+
+export class ConfigValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ConfigValidationError';
+  }
+}
 
 export type OxlintRuleConfig = string | [string, Record<string, unknown>];
 export interface OverlintConfigBase {

@@ -6,6 +6,7 @@ describe('mocha processor', () => {
   it('should do nothing if test framework is not mocha', async () => {
     const context: Context = {
       config: {
+        mainEntryPoint: 'src/main.ts',
         sources: ['src/**/*.ts'],
         tests: ['tests/**/*.test.ts'],
         testFramework: 'jest',
@@ -27,6 +28,7 @@ describe('mocha processor', () => {
     const files: Record<string, unknown> = {};
     const context: Context = {
       config: {
+        mainEntryPoint: 'src/main.ts',
         sources: ['src/**/*.ts'],
         tests: ['tests/**/*.test.ts'],
         testFramework: 'mocha',
@@ -51,6 +53,7 @@ describe('mocha processor', () => {
     const files: Record<string, unknown> = {};
     const context: Context = {
       config: {
+        mainEntryPoint: 'src/main.ts',
         sources: ['src/**/*.ts'],
         tests: ['tests/**/*.test.ts'],
         testFramework: 'mocha',

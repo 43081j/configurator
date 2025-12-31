@@ -7,12 +7,14 @@ export interface SummaryTabProps {
   files: FileInfo[];
   dependencies: Map<string, string>;
   devDependencies: Map<string, string>;
+  error: string | undefined;
 }
 
 export function SummaryTab({
   files,
   dependencies,
-  devDependencies
+  devDependencies,
+  error
 }: SummaryTabProps) {
   const handleFileClick = (path: string) => {
     activeTab.value = path;
@@ -26,6 +28,15 @@ export function SummaryTab({
 
   return (
     <div class="space-y-6">
+      {error && (
+        <section>
+          <h3 class="text-lg font-semibold text-red-700 mb-3">Errors</h3>
+          <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+            <p class="text-red-800 text-sm">{error}</p>
+          </div>
+        </section>
+      )}
+
       <section>
         <h3 class="text-lg font-semibold text-gray-900 mb-3">
           Generated Files

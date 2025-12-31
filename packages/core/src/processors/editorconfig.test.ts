@@ -6,6 +6,7 @@ describe('editorconfig processor', () => {
   it('should do nothing if formatter is not defined', async () => {
     const context: Context = {
       config: {
+        mainEntryPoint: 'src/main.ts',
         sources: ['src/**/*.ts'],
         tests: ['tests/**/*.test.ts'],
         typescript: false
@@ -26,6 +27,7 @@ describe('editorconfig processor', () => {
     const files: Record<string, unknown> = {};
     const context: Context = {
       config: {
+        mainEntryPoint: 'src/main.ts',
         sources: ['src/**/*.ts'],
         tests: ['tests/**/*.test.ts'],
         formatter: 'prettier',
