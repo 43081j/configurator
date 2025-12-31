@@ -5,6 +5,7 @@ import {config} from '../store/config.js';
 import {activeTab, sidebarOpen} from '../store/ui.js';
 import {SummaryTab} from './SummaryTab.js';
 import {FileTab} from './FileTab.js';
+import {exportFilesAsTar} from '../utils/export.js';
 
 interface GeneratedContent {
   files: FileInfo[];
@@ -80,6 +81,17 @@ export function ContentPanel() {
             {tab.label}
           </button>
         ))}
+
+        <button
+          onClick={() => exportFilesAsTar(content.files)}
+          disabled={content.files.length === 0}
+          class="ml-auto sticky right-0 mr-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex-shrink-0 z-10 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600 flex items-center gap-2 text-sm font-medium cursor-pointer"
+          aria-label="Export files as tar"
+          title="Export files as tar"
+        >
+          <span>Export</span>
+          <div class="i-material-symbols-download text-xl" />
+        </button>
       </div>
 
       <div class="flex-1 overflow-auto p-6">
