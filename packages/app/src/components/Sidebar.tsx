@@ -3,6 +3,7 @@ import type {
   Formatter,
   TestFramework,
   UIFramework,
+  Bundler,
   LintCategory
 } from '@43081j/configurator-core';
 import {TagInput} from './TagInput.js';
@@ -36,6 +37,14 @@ const UI_FRAMEWORKS: Array<{value: UIFramework; label: string}> = [
   {value: 'svelte', label: 'Svelte'},
   {value: 'lit', label: 'Lit'},
   {value: 'angular', label: 'Angular'}
+];
+
+const BUNDLERS: Array<{value: Bundler; label: string}> = [
+  {value: 'tsdown', label: 'tsdown'},
+  {value: 'zshy', label: 'zshy'},
+  {value: 'typescript', label: 'TypeScript'},
+  {value: 'rolldown', label: 'Rolldown'},
+  {value: 'esbuild', label: 'esbuild'}
 ];
 
 const LINT_CATEGORIES: Array<{value: LintCategory; label: string}> = [
@@ -142,6 +151,14 @@ export function Sidebar() {
             value={store.uiFramework.value}
             onChange={(v) => (store.uiFramework.value = v)}
             options={UI_FRAMEWORKS}
+            includeNone
+          />
+
+          <Select
+            label="Bundler"
+            value={store.bundler.value}
+            onChange={(v) => (store.bundler.value = v)}
+            options={BUNDLERS}
             includeNone
           />
 

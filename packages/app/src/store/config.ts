@@ -6,6 +6,7 @@ import type {
   Formatter,
   TestFramework,
   UIFramework,
+  Bundler,
   LintCategory
 } from '@43081j/configurator-core';
 
@@ -24,6 +25,7 @@ export const testFramework = signal<TestFramework | 'none'>(
 export const uiFramework = signal<UIFramework | 'none'>(
   defaults.uiFramework ?? 'none'
 );
+export const bundler = signal<Bundler | 'none'>(defaults.bundler ?? 'none');
 export const typescript = signal<boolean>(defaults.typescript);
 
 export const config = computed<Config>(() => {
@@ -47,6 +49,10 @@ export const config = computed<Config>(() => {
 
   if (uiFramework.value !== 'none') {
     cfg.uiFramework = uiFramework.value;
+  }
+
+  if (bundler.value !== 'none') {
+    cfg.bundler = bundler.value;
   }
 
   if (lintCategories.value.length > 0) {

@@ -12,6 +12,7 @@ import {
   type Formatter,
   type TestFramework,
   type UIFramework,
+  type Bundler,
   type LintCategory,
   defaults
 } from '@43081j/configurator-core';
@@ -42,6 +43,14 @@ const UI_FRAMEWORKS: Record<UIFramework, string> = {
   angular: 'Angular'
 };
 
+const BUNDLERS: Record<Bundler, string> = {
+  tsdown: 'tsdown',
+  zshy: 'zshy',
+  typescript: 'TypeScript',
+  rolldown: 'Rolldown',
+  esbuild: 'esbuild'
+};
+
 const LINT_CATEGORIES: Record<LintCategory, string> = {
   correctness: 'Correctness',
   performance: 'Performance',
@@ -55,6 +64,7 @@ interface Options {
   formatter?: string;
   'test-framework'?: string;
   'ui-framework'?: string;
+  bundler?: string;
   'lint-categories'?: string;
   typescript?: boolean;
   interactive?: boolean;
@@ -142,6 +152,8 @@ async function handler(outDir: string, opts: Options): Promise<void> {
     opts['test-framework'] === 'none' ? undefined : opts['test-framework'];
   let uiFramework: string | undefined =
     opts['ui-framework'] === 'none' ? undefined : opts['ui-framework'];
+  let bundler: string | undefined =
+    opts.bundler === 'none' ? undefined : opts.bundler;
   let lintCategories: string[] = (opts['lint-categories'] || '')
     .split(',')
     .map((s: string) => s.trim())
@@ -247,6 +259,19 @@ async function handler(outDir: string, opts: Options): Promise<void> {
 
     uiFramework = uiFrameworkInput;
 
+    const bundlerInput = await prompts.select({
+      message: 'Choose a bundler',
+      options: toSelectOptions(BUNDLERS, true),
+      initialValue: bundler
+    });
+
+    if (prompts.isCancel(bundlerInput)) {
+      prompts.cancel('Operation cancelled');
+      return;
+    }
+
+    bundler = bundlerInput;
+
     const typescriptInput = await prompts.select({
       message: 'Use TypeScript?',
       options: [
@@ -291,6 +316,13 @@ async function handler(outDir: string, opts: Options): Promise<void> {
   if (uiFramework !== undefined && !isValidOption(uiFramework, UI_FRAMEWORKS)) {
     prompts.log.error(
       `Invalid UI framework: ${uiFramework}. Valid options: ${Object.keys(UI_FRAMEWORKS).join(', ')}`
+    );
+    return;
+  }
+
+  if (bundler !== undefined && !isValidOption(bundler, BUNDLERS)) {
+    prompts.log.error(
+      `Invalid bundler: ${bundler}. Valid options: ${Object.keys(BUNDLERS).join(', ')}`
     );
     return;
   }
@@ -345,6 +377,10 @@ async function handler(outDir: string, opts: Options): Promise<void> {
     config.uiFramework = uiFramework;
   }
 
+  if (bundler !== undefined) {
+    config.bundler = bundler;
+  }
+
   if (lintCategories.length > 0) {
     config.lintConfig = {
       categories: lintCategories as LintCategory[]
@@ -388,6 +424,11 @@ export function cli(): void {
       '--ui-framework',
       'UI framework (react, vue, svelte, lit, angular)',
       defaults.uiFramework ?? 'none'
+    )
+    .option(
+      '--bundler',
+      'Bundler (tsdown, zshy, typescript, rolldown, esbuild)',
+      defaults.bundler ?? 'none'
     )
     .option(
       '--lint-categories',

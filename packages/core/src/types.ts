@@ -6,6 +6,8 @@ export type TestFramework = 'jest' | 'mocha' | 'vitest';
 
 export type UIFramework = 'react' | 'vue' | 'svelte' | 'lit' | 'angular';
 
+export type Bundler = 'tsdown' | 'zshy' | 'typescript' | 'rolldown' | 'esbuild';
+
 export type LintCategory = 'correctness' | 'performance' | 'modernization';
 
 export interface LintConfig {
@@ -19,6 +21,7 @@ export interface Config {
   formatter?: Formatter;
   testFramework?: TestFramework;
   uiFramework?: UIFramework;
+  bundler?: Bundler;
   lintConfig?: LintConfig;
   typescript: boolean;
 }
