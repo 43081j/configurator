@@ -20,7 +20,8 @@ export function exportFilesAsTar(
         : JSON.stringify(file.contents, null, 2)
   }));
 
-  const tarData = createTar(tarFiles);
+  // TODO (jg): remove when nanotar has this internally
+  const tarData = createTar(tarFiles) as Uint8Array<ArrayBuffer>;
 
   const blob = new Blob([tarData], {type: 'application/x-tar'});
   const url = URL.createObjectURL(blob);
