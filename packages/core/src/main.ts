@@ -5,6 +5,7 @@ import {processor as editorConfigProcessor} from './processors/editorconfig.js';
 import {processor as vitestProcessor} from './processors/vitest.js';
 import {processor as mochaProcessor} from './processors/mocha.js';
 import {processor as eslintProcessor} from './processors/eslint.js';
+import {processor as biomeProcessor} from './processors/biome.js';
 import type {Context, Processor, Config} from './types.js';
 
 export * from './types.js';
@@ -16,7 +17,8 @@ const processors = new Set<Processor>([
   editorConfigProcessor,
   vitestProcessor,
   mochaProcessor,
-  eslintProcessor
+  eslintProcessor,
+  biomeProcessor
 ]);
 
 export async function execute(context: Context): Promise<void> {
