@@ -97,3 +97,35 @@ export interface MochaConfig {
   'watch-ignore'?: string[];
   spec?: string[];
 }
+
+export interface BiomeConfig {
+  files:
+    | {
+        includes?: string[];
+      }
+    | undefined;
+  formatter:
+    | {
+        enabled: boolean;
+        useEditorconfig?: boolean;
+        bracketSpacing?: boolean;
+      }
+    | undefined;
+  linter:
+    | {
+        enabled: boolean;
+        domains?: Record<string, string>;
+        rules?: Record<string, string | {recommended: boolean}>;
+      }
+    | undefined;
+  javascript:
+    | {
+        formatter: {
+          quoteStyle?: 'single' | 'double';
+          trailingCommas?: 'none' | 'es5' | 'all';
+          semicolons?: 'always' | 'asNeeded';
+          arrowParentheses?: 'always' | 'asNeeded';
+        };
+      }
+    | undefined;
+}
