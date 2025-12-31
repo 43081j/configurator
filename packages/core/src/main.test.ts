@@ -36,7 +36,9 @@ describe('main', () => {
           return Promise.resolve();
         },
         addDependency: vi.fn(),
-        addDevDependency: vi.fn()
+        addDevDependency: vi.fn(),
+        emitPackageField: vi.fn(),
+        finalise: vi.fn().mockResolvedValue(undefined)
       };
 
       await execute(context);
@@ -57,7 +59,9 @@ describe('main', () => {
         },
         emitFile: vi.fn(),
         addDependency: vi.fn(),
-        addDevDependency: vi.fn()
+        addDevDependency: vi.fn(),
+        emitPackageField: vi.fn(),
+        finalise: vi.fn().mockResolvedValue(undefined)
       };
 
       await expect(execute(context)).rejects.toThrow(ConfigValidationError);
@@ -77,7 +81,9 @@ describe('main', () => {
         },
         emitFile: vi.fn(),
         addDependency: vi.fn(),
-        addDevDependency: vi.fn()
+        addDevDependency: vi.fn(),
+        emitPackageField: vi.fn(),
+        finalise: vi.fn().mockResolvedValue(undefined)
       };
 
       await expect(execute(context)).resolves.not.toThrow();
@@ -94,7 +100,9 @@ describe('main', () => {
         },
         emitFile: vi.fn(),
         addDependency: vi.fn(),
-        addDevDependency: vi.fn()
+        addDevDependency: vi.fn(),
+        emitPackageField: vi.fn(),
+        finalise: vi.fn().mockResolvedValue(undefined)
       };
 
       await expect(execute(context)).resolves.not.toThrow();

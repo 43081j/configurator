@@ -13,7 +13,9 @@ describe('editorconfig processor', () => {
       },
       addDevDependency: vi.fn(),
       addDependency: vi.fn(),
-      emitFile: vi.fn()
+      emitFile: vi.fn(),
+      emitPackageField: vi.fn(),
+      finalise: vi.fn().mockResolvedValue(undefined)
     };
 
     await processor(context);
@@ -38,7 +40,9 @@ describe('editorconfig processor', () => {
       emitFile(file) {
         files[file.name] = file.contents;
         return Promise.resolve();
-      }
+      },
+      emitPackageField: vi.fn(),
+      finalise: vi.fn().mockResolvedValue(undefined)
     };
 
     await processor(context);

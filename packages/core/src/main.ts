@@ -42,6 +42,8 @@ export async function execute(context: Context): Promise<void> {
   for (const processor of processors) {
     await processor(context);
   }
+
+  await context.finalise();
 }
 
 export const defaults: Config = {
