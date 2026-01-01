@@ -9,7 +9,7 @@ exports[`mocha processor > should add typescript support if typescript is true 1
     "loader": "ts-node/esm",
     "require": "ts-node/register",
     "spec": [
-      "tests/**/*.test.ts",
+      "src/**/*.test.ts",
     ],
   },
 }
