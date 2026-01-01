@@ -158,6 +158,9 @@ class ConfiguratorContext implements Context {
   async finalise(): Promise<void> {
     const packageJsonPath = join(this.#outDir, 'package.json');
 
+    this.#packageJSON.dependencies = this.#dependencies;
+    this.#packageJSON.devDependencies = this.#devDependencies;
+
     try {
       await access(packageJsonPath);
     } catch {

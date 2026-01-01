@@ -54,6 +54,9 @@ export async function generateContent(
       }
     },
     finalise: async () => {
+      packageJSON.dependencies = Object.fromEntries(dependencies);
+      packageJSON.devDependencies = Object.fromEntries(devDependencies);
+
       files.push({
         name: 'package.json',
         contents: packageJSON
