@@ -67,6 +67,14 @@ export const processor: Processor = async (context) => {
         })
       });
       break;
+    case 'react':
+      context.emitFile({
+        name: 'tsconfig.json',
+        contents: createTSConfig(context, {
+          jsx: 'react-jsx'
+        })
+      });
+      break;
     default:
       context.emitFile({
         name: 'tsconfig.json',

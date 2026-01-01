@@ -92,4 +92,31 @@ describe('typescript processor', () => {
       '.': 'dist/main.js'
     });
   });
+
+  it('should emit tsconfig with react jsx settings when uiFramework is react', async () => {
+    const {context, files} = createContext({uiFramework: 'react'});
+
+    await processor(context);
+
+    expect(context.addDevDependency).toHaveBeenCalledWith(
+      '@typescript/native-preview',
+      '^7.0.0-dev.20260101.1'
+    );
+    expect(context.addDevDependency).toHaveBeenCalledWith(
+      '@tsconfig/strictest',
+      '^2.0.8'
+    );
+    expect(context.addDependency).not.toHaveBeenCalled();
+    expect(files).toMatchSnapshot();
+    expect(context.emitPackageField).toHaveBeenCalledWith('scripts', {
+      build: 'tsgo'
+    });
+    expect(context.emitPackageField).toHaveBeenCalledWith(
+      'main',
+      'dist/main.js'
+    );
+    expect(context.emitPackageField).toHaveBeenCalledWith('exports', {
+      '.': 'dist/main.js'
+    });
+  });
 });
