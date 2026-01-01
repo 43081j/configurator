@@ -18,6 +18,7 @@ export async function generateContent(
   const packageJSON: Record<string, unknown> = {
     name: 'generated-project',
     version: '1.0.0',
+    type: 'module',
     dependencies: {},
     devDependencies: {}
   };

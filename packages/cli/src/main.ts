@@ -104,7 +104,13 @@ class ConfiguratorContext implements Context {
   #outDir: string;
   #devDependencies: Record<string, string> = {};
   #dependencies: Record<string, string> = {};
-  #packageJSON: Record<string, unknown> = {};
+  #packageJSON: Record<string, unknown> = {
+    name: 'generated-project',
+    version: '1.0.0',
+    type: 'module',
+    dependencies: {},
+    devDependencies: {}
+  };
 
   constructor(config: Config, outDir: string) {
     this.config = config;

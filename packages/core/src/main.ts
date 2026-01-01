@@ -6,6 +6,7 @@ import {processor as vitestProcessor} from './processors/vitest.js';
 import {processor as mochaProcessor} from './processors/mocha.js';
 import {processor as eslintProcessor} from './processors/eslint.js';
 import {processor as biomeProcessor} from './processors/biome.js';
+import {processor as zshyProcessor} from './processors/zshy.js';
 import type {Context, Processor, Config} from './types.js';
 import {ConfigValidationError} from './types.js';
 
@@ -19,7 +20,8 @@ const processors = new Set<Processor>([
   vitestProcessor,
   mochaProcessor,
   eslintProcessor,
-  biomeProcessor
+  biomeProcessor,
+  zshyProcessor
 ]);
 
 const bundlersRequiringEntryPoint = ['tsdown', 'zshy', 'rolldown', 'esbuild'];

@@ -142,3 +142,8 @@ export interface BiomeConfig {
       }
     | undefined;
 }
+
+export interface ZshyConfig {
+  exports: Record<string, string>;
+  cjs: boolean;
+}
