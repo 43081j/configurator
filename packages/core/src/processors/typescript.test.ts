@@ -35,8 +35,8 @@ describe('typescript processor', () => {
     await processor(context);
 
     expect(context.addDevDependency).toHaveBeenCalledWith(
-      'typescript',
-      '^5.9.3'
+      '@typescript/native-preview',
+      '^7.0.0-dev.20260101.1'
     );
     expect(context.addDependency).not.toHaveBeenCalled();
     expect(files).toMatchSnapshot();
@@ -49,13 +49,13 @@ describe('typescript processor', () => {
     await processor(context);
 
     expect(context.addDevDependency).toHaveBeenCalledWith(
-      'typescript',
-      '^5.9.3'
+      '@typescript/native-preview',
+      '^7.0.0-dev.20260101.1'
     );
     expect(context.addDependency).not.toHaveBeenCalled();
     expect(files).toMatchSnapshot();
     expect(context.emitPackageField).toHaveBeenCalledWith('scripts', {
-      build: 'tsc'
+      build: 'tsgo'
     });
     expect(context.emitPackageField).toHaveBeenCalledWith(
       'main',
