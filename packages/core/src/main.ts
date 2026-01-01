@@ -12,6 +12,7 @@ import type {Context, Processor, Config} from './types.js';
 import {ConfigValidationError} from './types.js';
 
 export * from './types.js';
+export * from './constants.js';
 
 const processors = new Set<Processor>([
   oxlintProcessor,
@@ -48,6 +49,17 @@ function validateConfig(config: Config): void {
   if (config.bundler === 'typescript' && !config.typescript) {
     throw new ConfigValidationError(
       'Bundler "typescript" requires TypeScript to be enabled'
+    );
+  }
+
+  if (
+    config.uiFramework === 'vue' &&
+    (!config.bundler ||
+      config.bundler === 'typescript' ||
+      config.bundler === 'zshy')
+  ) {
+    throw new ConfigValidationError(
+      'UI framework "vue" requires a bundler to be selected which is capable of handling Vue files'
     );
   }
 }

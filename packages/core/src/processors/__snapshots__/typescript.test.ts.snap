@@ -63,6 +63,29 @@ exports[`typescript processor > should emit tsconfig with react jsx settings whe
 }
 `;
 
+exports[`typescript processor > should emit tsconfig with vue jsx settings when uiFramework is vue 1`] = `
+{
+  "tsconfig.json": {
+    "compilerOptions": {
+      "declaration": true,
+      "erasableSyntaxOnly": true,
+      "jsx": "preserve",
+      "jsxImportSource": "vue",
+      "module": "node18",
+      "noEmit": true,
+      "outDir": "dist",
+      "sourceMap": false,
+      "target": "esnext",
+      "types": [],
+    },
+    "extends": "@tsconfig/strictest/tsconfig.json",
+    "include": [
+      "src/**/*.ts",
+    ],
+  },
+}
+`;
+
 exports[`typescript processor > should only add dependency & tsconfig if bundler is not typescript 1`] = `
 {
   "tsconfig.json": {

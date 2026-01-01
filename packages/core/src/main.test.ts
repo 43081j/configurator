@@ -151,5 +151,73 @@ describe('main', () => {
         'Bundler "typescript" requires TypeScript to be enabled'
       );
     });
+
+    it('should throw when vue ui framework is used without a bundler', async () => {
+      const context: Context = {
+        config: {
+          mainEntryPoint: 'src/main.ts',
+          sources: ['src/**/*.ts'],
+          tests: ['src/**/*.test.ts'],
+          uiFramework: 'vue',
+          typescript: true
+        },
+        emitFile: vi.fn(),
+        addDependency: vi.fn(),
+        addDevDependency: vi.fn(),
+        emitPackageField: vi.fn(),
+        finalise: vi.fn().mockResolvedValue(undefined)
+      };
+
+      await expect(execute(context)).rejects.toThrow(ConfigValidationError);
+      await expect(execute(context)).rejects.toThrow(
+        'UI framework "vue" requires a bundler to be selected which is capable of handling Vue files'
+      );
+    });
+
+    it('should throw when vue ui framework is used with typescript bundler', async () => {
+      const context: Context = {
+        config: {
+          mainEntryPoint: 'src/main.ts',
+          sources: ['src/**/*.ts'],
+          tests: ['src/**/*.test.ts'],
+          uiFramework: 'vue',
+          bundler: 'typescript',
+          typescript: true
+        },
+        emitFile: vi.fn(),
+        addDependency: vi.fn(),
+        addDevDependency: vi.fn(),
+        emitPackageField: vi.fn(),
+        finalise: vi.fn().mockResolvedValue(undefined)
+      };
+
+      await expect(execute(context)).rejects.toThrow(ConfigValidationError);
+      await expect(execute(context)).rejects.toThrow(
+        'UI framework "vue" requires a bundler to be selected which is capable of handling Vue files'
+      );
+    });
+
+    it('should throw when vue ui framework is used with zshy bundler', async () => {
+      const context: Context = {
+        config: {
+          mainEntryPoint: 'src/main.ts',
+          sources: ['src/**/*.ts'],
+          tests: ['src/**/*.test.ts'],
+          uiFramework: 'vue',
+          bundler: 'zshy',
+          typescript: true
+        },
+        emitFile: vi.fn(),
+        addDependency: vi.fn(),
+        addDevDependency: vi.fn(),
+        emitPackageField: vi.fn(),
+        finalise: vi.fn().mockResolvedValue(undefined)
+      };
+
+      await expect(execute(context)).rejects.toThrow(ConfigValidationError);
+      await expect(execute(context)).rejects.toThrow(
+        'UI framework "vue" requires a bundler to be selected which is capable of handling Vue files'
+      );
+    });
   });
 });

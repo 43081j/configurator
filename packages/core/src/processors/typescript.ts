@@ -75,6 +75,16 @@ export const processor: Processor = async (context) => {
         })
       });
       break;
+    case 'vue':
+      context.emitFile({
+        name: 'tsconfig.json',
+        contents: createTSConfig(context, {
+          noEmit: true,
+          jsx: 'preserve',
+          jsxImportSource: 'vue'
+        })
+      });
+      break;
     default:
       context.emitFile({
         name: 'tsconfig.json',

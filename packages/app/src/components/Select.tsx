@@ -1,6 +1,7 @@
 interface SelectOption<T extends string = string> {
   value: T;
   label: string;
+  disabled?: boolean;
 }
 
 interface SelectProps<T extends string = string> {
@@ -18,7 +19,7 @@ export function Select<T extends string = string>({
   options,
   includeNone = false
 }: SelectProps<T>) {
-  const allOptions = includeNone
+  const allOptions: Array<SelectOption<T | 'none'>> = includeNone
     ? [{value: 'none', label: 'None'}, ...options]
     : options;
 
@@ -33,7 +34,11 @@ export function Select<T extends string = string>({
         }
       >
         {allOptions.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option
+            key={option.value}
+            value={option.value}
+            disabled={option.disabled}
+          >
             {option.label}
           </option>
         ))}
