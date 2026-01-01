@@ -8,6 +8,7 @@ import {processor as eslintProcessor} from './processors/eslint.js';
 import {processor as biomeProcessor} from './processors/biome.js';
 import {processor as zshyProcessor} from './processors/zshy.js';
 import {processor as typescriptProcessor} from './processors/typescript.js';
+import {processor as tsdownProcessor} from './processors/tsdown.js';
 import type {Context, Processor, Config} from './types.js';
 import {ConfigValidationError} from './types.js';
 import {INCOMPATIBLE_BUNDLERS} from './constants.js';
@@ -25,7 +26,8 @@ const processors = new Set<Processor>([
   eslintProcessor,
   biomeProcessor,
   zshyProcessor,
-  typescriptProcessor
+  typescriptProcessor,
+  tsdownProcessor
 ]);
 
 const bundlersRequiringEntryPoint = ['tsdown', 'zshy', 'rolldown', 'esbuild'];

@@ -1,0 +1,74 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`tsdown processor > should emit react-specific config when uiFramework is react 1`] = `
+{
+  "tsdown.config.ts": "import { defineConfig } from 'tsdown'
+
+export default defineConfig({
+  entry: ["src/main.ts"],
+  platform: 'neutral',
+  dts: true
+})",
+}
+`;
+
+exports[`tsdown processor > should emit svelte-specific config when uiFramework is svelte 1`] = `
+{
+  "tsdown.config.ts": "import { defineConfig } from 'tsdown'
+import svelte from 'rollup-plugin-svelte'
+import { sveltePreprocess } from 'svelte-preprocess'
+
+export default defineConfig({
+  entry: ["src/main.ts"],
+  platform: 'neutral',
+  plugins: [svelte({ preprocess: sveltePreprocess() })]
+})",
+}
+`;
+
+exports[`tsdown processor > should emit tsdown config and package fields when bundler is tsdown 1`] = `
+{
+  "tsdown.config.ts": "import { defineConfig } from 'tsdown'
+
+export default defineConfig({
+  entry: ["src/main.ts"],
+  dts: true
+})",
+}
+`;
+
+exports[`tsdown processor > should emit vue-specific config when uiFramework is vue 1`] = `
+{
+  "tsdown.config.ts": "import { defineConfig } from 'tsdown'
+import vue from 'unplugin-vue/rolldown'
+
+export default defineConfig({
+  entry: ["src/main.ts"],
+  platform: 'neutral',
+  plugins: [vue({ isProduction: true })],
+  dts: { vue: true }
+})",
+}
+`;
+
+exports[`tsdown processor > should handle entrypoint without directory 1`] = `
+{
+  "tsdown.config.ts": "import { defineConfig } from 'tsdown'
+
+export default defineConfig({
+  entry: ["index.ts"],
+  dts: true
+})",
+}
+`;
+
+exports[`tsdown processor > should handle nested entrypoint paths correctly 1`] = `
+{
+  "tsdown.config.ts": "import { defineConfig } from 'tsdown'
+
+export default defineConfig({
+  entry: ["src/foo/bar.ts"],
+  dts: true
+})",
+}
+`;
