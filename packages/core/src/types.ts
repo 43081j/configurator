@@ -4,7 +4,13 @@ export type Formatter = 'prettier' | 'oxfmt' | 'biome';
 
 export type TestFramework = 'jest' | 'mocha' | 'vitest';
 
-export type UIFramework = 'react' | 'vue' | 'svelte' | 'lit' | 'angular';
+export type UIFramework =
+  | 'react'
+  | 'vue'
+  | 'svelte'
+  | 'lit'
+  | 'angular'
+  | 'preact';
 
 export type Bundler = 'tsdown' | 'zshy' | 'typescript' | 'rolldown' | 'esbuild';
 

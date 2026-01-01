@@ -88,6 +88,29 @@ describe('oxlint processor', () => {
     expect(files).toMatchSnapshot();
   });
 
+  it('should add react plugin if ui framework is preact', async () => {
+    const {context, files} = createContext({
+      uiFramework: 'preact'
+    });
+
+    await processor(context);
+
+    expect(files).toMatchSnapshot();
+  });
+
+  it('should add react-perf plugin if preact & perf category enabled', async () => {
+    const {context, files} = createContext({
+      uiFramework: 'preact',
+      lintConfig: {
+        categories: ['performance']
+      }
+    });
+
+    await processor(context);
+
+    expect(files).toMatchSnapshot();
+  });
+
   it('should add vue plugin if ui framework is vue', async () => {
     const {context, files} = createContext({
       uiFramework: 'vue'

@@ -68,7 +68,8 @@ const createESLintConfig = (context: Context): string => {
     context.addDevDependency('typescript-eslint', '^8.51.0');
   }
   switch (uiFramework) {
-    case 'react': {
+    case 'react':
+    case 'preact': {
       context.addDevDependency('@eslint-react/eslint-plugin', '^2.4.0');
       imports.push(`import eslintReact from '@eslint-react/eslint-plugin';`);
       if (context.config.typescript) {

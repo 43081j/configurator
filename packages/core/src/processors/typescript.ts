@@ -21,6 +21,26 @@ const processBundler = async (context: Context) => {
   });
 };
 
+const createTSConfig = (
+  context: Context,
+  extraCompilerOptions: Record<string, unknown> = {}
+) => {
+  return {
+    extends: '@tsconfig/strictest/tsconfig.json',
+    compilerOptions: {
+      module: 'node18',
+      target: 'esnext',
+      types: [],
+      outDir: 'dist',
+      declaration: true,
+      sourceMap: false,
+      erasableSyntaxOnly: true,
+      ...extraCompilerOptions
+    },
+    include: context.config.sources
+  };
+};
+
 export const processor: Processor = async (context) => {
   if (!context.config.typescript) {
     return;
@@ -34,23 +54,24 @@ export const processor: Processor = async (context) => {
     '@typescript/native-preview',
     '^7.0.0-dev.20260101.1'
   );
+
   context.addDevDependency('@tsconfig/strictest', '^2.0.8');
-  context.emitFile({
-    name: 'tsconfig.json',
-    contents: {
-      extends: '@tsconfig/strictest/tsconfig.json',
-      compilerOptions: {
-        module: 'node18',
-        target: 'esnext',
-        types: [],
-        outDir: 'dist',
-        declaration: true,
-        sourceMap: false,
-        erasableSyntaxOnly: true
-      },
-      // TODO (jg): maybe transform this to the root dir, e.g. `src`?
-      // instead of a glob
-      include: context.config.sources
-    }
-  });
+
+  switch (context.config.uiFramework) {
+    case 'preact':
+      context.emitFile({
+        name: 'tsconfig.json',
+        contents: createTSConfig(context, {
+          jsx: 'react-jsx',
+          jsxImportSource: 'preact'
+        })
+      });
+      break;
+    default:
+      context.emitFile({
+        name: 'tsconfig.json',
+        contents: createTSConfig(context)
+      });
+      break;
+  }
 };

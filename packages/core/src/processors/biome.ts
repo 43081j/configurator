@@ -62,6 +62,7 @@ export const processor: Processor = async (context) => {
 
     switch (context.config.uiFramework) {
       case 'react':
+      case 'preact':
         domains['react'] = 'recommended';
         break;
       case 'vue':

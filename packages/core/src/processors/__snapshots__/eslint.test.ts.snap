@@ -163,6 +163,34 @@ export default defineConfig([
 }
 `;
 
+exports[`eslint processor > should add react plugin if ui framework is preact 1`] = `
+{
+  "eslint.config.mjs": "import {defineConfig} from 'eslint/config';
+import js from '@eslint/js';
+import eslintReact from '@eslint-react/eslint-plugin';
+import globals from 'globals';
+
+export default defineConfig([
+  {
+    files: ["src/**/*.ts", "src/**/*.test.ts"],
+    languageOptions: {
+      globals: {
+        ...globals.browser
+      }
+    },
+    plugins: {
+      js,
+      "@eslint-react": eslintReact
+    },
+    extends: [
+      "js/recommended",
+      "@eslint-react/recommended"
+    ]
+  }
+];",
+}
+`;
+
 exports[`eslint processor > should add react plugin if ui framework is react 1`] = `
 {
   "eslint.config.mjs": "import {defineConfig} from 'eslint/config';

@@ -75,6 +75,19 @@ describe('eslint processor', () => {
     expect(files).toMatchSnapshot();
   });
 
+  it('should add react plugin if ui framework is preact', async () => {
+    const {context, files} = createContext({uiFramework: 'preact'});
+
+    await processor(context);
+
+    expect(context.addDevDependency).toHaveBeenCalledWith(
+      '@eslint-react/eslint-plugin',
+      '^2.4.0'
+    );
+    expect(context.addDependency).not.toHaveBeenCalledWith();
+    expect(files).toMatchSnapshot();
+  });
+
   it('should add vue plugin if ui framework is vue', async () => {
     const {context, files} = createContext({uiFramework: 'vue'});
 

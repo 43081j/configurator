@@ -79,6 +79,23 @@ exports[`oxlint processor > should add mocha env if test framework is mocha 1`] 
 }
 `;
 
+exports[`oxlint processor > should add react plugin if ui framework is preact 1`] = `
+{
+  ".oxlintrc.json": {
+    "categories": {},
+    "env": {
+      "browser": true,
+    },
+    "plugins": [
+      "eslint",
+      "oxc",
+      "react",
+    ],
+    "rules": {},
+  },
+}
+`;
+
 exports[`oxlint processor > should add react plugin if ui framework is react 1`] = `
 {
   ".oxlintrc.json": {
@@ -90,6 +107,26 @@ exports[`oxlint processor > should add react plugin if ui framework is react 1`]
       "eslint",
       "oxc",
       "react",
+    ],
+    "rules": {},
+  },
+}
+`;
+
+exports[`oxlint processor > should add react-perf plugin if preact & perf category enabled 1`] = `
+{
+  ".oxlintrc.json": {
+    "categories": {
+      "perf": "error",
+    },
+    "env": {
+      "browser": true,
+    },
+    "plugins": [
+      "eslint",
+      "oxc",
+      "react",
+      "react-perf",
     ],
     "rules": {},
   },
