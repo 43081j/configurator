@@ -9,7 +9,7 @@ describe('oxfmt processor', () => {
         mainEntryPoint: 'src/main.ts',
         formatter: 'prettier',
         sources: ['src/**/*.ts'],
-        tests: ['tests/**/*.test.ts'],
+        tests: ['src/**/*.test.ts'],
         typescript: false
       },
       addDevDependency: vi.fn(),
@@ -32,7 +32,7 @@ describe('oxfmt processor', () => {
       config: {
         mainEntryPoint: 'src/main.ts',
         sources: ['src/**/*.ts'],
-        tests: ['tests/**/*.test.ts'],
+        tests: ['src/**/*.test.ts'],
         formatter: 'oxfmt',
         typescript: false
       },

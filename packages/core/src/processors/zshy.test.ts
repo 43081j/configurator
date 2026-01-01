@@ -8,7 +8,7 @@ describe('zshy processor', () => {
       config: {
         mainEntryPoint: 'src/main.ts',
         sources: ['src/**/*.ts'],
-        tests: ['tests/**/*.test.ts'],
+        tests: ['src/**/*.test.ts'],
         bundler: 'tsdown',
         typescript: true
       },
@@ -32,7 +32,7 @@ describe('zshy processor', () => {
       config: {
         mainEntryPoint: '',
         sources: ['src/**/*.ts'],
-        tests: ['tests/**/*.test.ts'],
+        tests: ['src/**/*.test.ts'],
         bundler: 'zshy',
         typescript: true
       },
@@ -56,7 +56,7 @@ describe('zshy processor', () => {
       config: {
         mainEntryPoint: 'src/main.ts',
         sources: ['src/**/*.ts'],
-        tests: ['tests/**/*.test.ts'],
+        tests: ['src/**/*.test.ts'],
         bundler: 'zshy',
         typescript: true
       },

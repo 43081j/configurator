@@ -107,5 +107,27 @@ describe('main', () => {
 
       await expect(execute(context)).resolves.not.toThrow();
     });
+
+    it('should throw when zshy bundler is used without typescript', async () => {
+      const context: Context = {
+        config: {
+          mainEntryPoint: 'src/main.ts',
+          sources: ['src/**/*.ts'],
+          tests: ['src/**/*.test.ts'],
+          bundler: 'zshy',
+          typescript: false
+        },
+        emitFile: vi.fn(),
+        addDependency: vi.fn(),
+        addDevDependency: vi.fn(),
+        emitPackageField: vi.fn(),
+        finalise: vi.fn().mockResolvedValue(undefined)
+      };
+
+      await expect(execute(context)).rejects.toThrow(ConfigValidationError);
+      await expect(execute(context)).rejects.toThrow(
+        'Bundler "zshy" requires TypeScript to be enabled'
+      );
+    });
   });
 });

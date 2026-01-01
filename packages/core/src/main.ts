@@ -36,6 +36,12 @@ function validateConfig(config: Config): void {
       `Bundler "${config.bundler}" requires a main entry point to be specified`
     );
   }
+
+  if (config.bundler === 'zshy' && !config.typescript) {
+    throw new ConfigValidationError(
+      'Bundler "zshy" requires TypeScript to be enabled'
+    );
+  }
 }
 
 export async function execute(context: Context): Promise<void> {

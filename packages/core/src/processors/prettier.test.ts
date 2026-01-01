@@ -9,7 +9,7 @@ describe('prettier processor', () => {
         mainEntryPoint: 'src/main.ts',
         formatter: 'oxfmt',
         sources: ['src/**/*.ts'],
-        tests: ['tests/**/*.test.ts'],
+        tests: ['src/**/*.test.ts'],
         typescript: false
       },
       addDevDependency: vi.fn(),
@@ -32,7 +32,7 @@ describe('prettier processor', () => {
       config: {
         mainEntryPoint: 'src/main.ts',
         sources: ['src/**/*.ts'],
-        tests: ['tests/**/*.test.ts'],
+        tests: ['src/**/*.test.ts'],
         formatter: 'prettier',
         typescript: false
       },
@@ -59,7 +59,7 @@ describe('prettier processor', () => {
       config: {
         mainEntryPoint: 'src/main.ts',
         sources: ['src/**/*.ts'],
-        tests: ['tests/**/*.test.ts'],
+        tests: ['src/**/*.test.ts'],
         formatter: 'prettier',
         typescript: false,
         uiFramework: 'svelte'

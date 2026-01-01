@@ -8,7 +8,7 @@ describe('mocha processor', () => {
       config: {
         mainEntryPoint: 'src/main.ts',
         sources: ['src/**/*.ts'],
-        tests: ['tests/**/*.test.ts'],
+        tests: ['src/**/*.test.ts'],
         testFramework: 'jest',
         typescript: false
       },
@@ -32,7 +32,7 @@ describe('mocha processor', () => {
       config: {
         mainEntryPoint: 'src/main.ts',
         sources: ['src/**/*.ts'],
-        tests: ['tests/**/*.test.ts'],
+        tests: ['src/**/*.test.ts'],
         testFramework: 'mocha',
         typescript: false
       },
@@ -59,7 +59,7 @@ describe('mocha processor', () => {
       config: {
         mainEntryPoint: 'src/main.ts',
         sources: ['src/**/*.ts'],
-        tests: ['tests/**/*.test.ts'],
+        tests: ['src/**/*.test.ts'],
         testFramework: 'mocha',
         typescript: true
       },

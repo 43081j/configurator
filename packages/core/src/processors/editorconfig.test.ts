@@ -8,7 +8,7 @@ describe('editorconfig processor', () => {
       config: {
         mainEntryPoint: 'src/main.ts',
         sources: ['src/**/*.ts'],
-        tests: ['tests/**/*.test.ts'],
+        tests: ['src/**/*.test.ts'],
         typescript: false
       },
       addDevDependency: vi.fn(),
@@ -31,7 +31,7 @@ describe('editorconfig processor', () => {
       config: {
         mainEntryPoint: 'src/main.ts',
         sources: ['src/**/*.ts'],
-        tests: ['tests/**/*.test.ts'],
+        tests: ['src/**/*.test.ts'],
         formatter: 'prettier',
         typescript: false
       },
