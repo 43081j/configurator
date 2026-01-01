@@ -37,7 +37,8 @@ const UI_FRAMEWORKS: Array<{value: UIFramework; label: string}> = [
   {value: 'vue', label: 'Vue'},
   {value: 'svelte', label: 'Svelte'},
   {value: 'lit', label: 'Lit'},
-  {value: 'angular', label: 'Angular'}
+  {value: 'angular', label: 'Angular'},
+  {value: 'preact', label: 'Preact'}
 ];
 
 const BUNDLERS: Array<{value: Bundler; label: string}> = [

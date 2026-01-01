@@ -33,7 +33,8 @@ export const processor: Processor = async (context) => {
   }
 
   switch (context.config.uiFramework) {
-    case 'react': {
+    case 'react':
+    case 'preact': {
       plugins.push('react');
       if (context.config.lintConfig?.categories.includes('performance')) {
         plugins.push('react-perf');

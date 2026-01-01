@@ -41,7 +41,8 @@ const UI_FRAMEWORKS: Record<UIFramework, string> = {
   vue: 'Vue',
   svelte: 'Svelte',
   lit: 'Lit',
-  angular: 'Angular'
+  angular: 'Angular',
+  preact: 'Preact'
 };
 
 const BUNDLERS: Record<Bundler, string> = {
@@ -492,7 +493,7 @@ export function cli(): void {
     )
     .option(
       '--ui-framework',
-      'UI framework (react, vue, svelte, lit, angular)',
+      'UI framework (react, vue, svelte, lit, angular, preact)',
       defaults.uiFramework ?? 'none'
     )
     .option(
