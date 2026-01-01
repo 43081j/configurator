@@ -42,6 +42,27 @@ exports[`typescript processor > should emit tsconfig with preact jsx settings wh
 }
 `;
 
+exports[`typescript processor > should emit tsconfig with react jsx settings when uiFramework is react 1`] = `
+{
+  "tsconfig.json": {
+    "compilerOptions": {
+      "declaration": true,
+      "erasableSyntaxOnly": true,
+      "jsx": "react-jsx",
+      "module": "node18",
+      "outDir": "dist",
+      "sourceMap": false,
+      "target": "esnext",
+      "types": [],
+    },
+    "extends": "@tsconfig/strictest/tsconfig.json",
+    "include": [
+      "src/**/*.ts",
+    ],
+  },
+}
+`;
+
 exports[`typescript processor > should only add dependency & tsconfig if bundler is not typescript 1`] = `
 {
   "tsconfig.json": {
