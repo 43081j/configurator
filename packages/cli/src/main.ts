@@ -6,58 +6,22 @@ import {styleText} from 'node:util';
 import {
   execute,
   ConfigValidationError,
+  LINTERS,
+  FORMATTERS,
+  TEST_FRAMEWORKS,
+  UI_FRAMEWORKS,
+  BUNDLERS,
+  LINT_CATEGORIES,
+  INCOMPATIBLE_BUNDLERS,
   type Config,
   type Context,
   type FileInfo,
-  type Linter,
-  type Formatter,
-  type TestFramework,
+  type LintCategory,
+  type LabeledOption,
   type UIFramework,
   type Bundler,
-  type LintCategory,
   defaults
 } from '@43081j/configurator-core';
-
-const LINTERS: Record<Linter, string> = {
-  eslint: 'ESLint',
-  oxlint: 'oxlint',
-  biome: 'Biome'
-};
-
-const FORMATTERS: Record<Formatter, string> = {
-  prettier: 'Prettier',
-  oxfmt: 'oxfmt',
-  biome: 'Biome'
-};
-
-const TEST_FRAMEWORKS: Record<TestFramework, string> = {
-  jest: 'Jest',
-  mocha: 'Mocha',
-  vitest: 'Vitest'
-};
-
-const UI_FRAMEWORKS: Record<UIFramework, string> = {
-  react: 'React',
-  vue: 'Vue',
-  svelte: 'Svelte',
-  lit: 'Lit',
-  angular: 'Angular',
-  preact: 'Preact'
-};
-
-const BUNDLERS: Record<Bundler, string> = {
-  tsdown: 'tsdown',
-  zshy: 'zshy',
-  typescript: 'TypeScript',
-  rolldown: 'Rolldown',
-  esbuild: 'esbuild'
-};
-
-const LINT_CATEGORIES: Record<LintCategory, string> = {
-  correctness: 'Correctness',
-  performance: 'Performance',
-  modernization: 'Modernization'
-};
 
 interface Options {
   'main-entry-point'?: string;
@@ -75,23 +39,27 @@ interface Options {
 
 function isValidOption<T extends string>(
   value: string,
-  options: Record<T, string>
+  options: Array<LabeledOption<T>>
 ): value is T {
-  return value in options;
+  return options.some((opt) => opt.value === value);
 }
 
-type OptionLike<T> = {value: T | undefined; label: string};
+type OptionLike<T> = {
+  value: T | undefined;
+  label: string;
+  disabled?: boolean;
+};
 
 function toSelectOptions<T extends string>(
-  options: Record<T, string>,
-  includeNone = false
+  options: Array<LabeledOption<T>>,
+  includeNone = false,
+  disabledValues: T[] = []
 ): Array<OptionLike<T>> {
-  const opts = Object.entries<string>(options).map<OptionLike<T>>(
-    ([value, label]) => ({
-      value: value as T,
-      label: label
-    })
-  );
+  const opts = options.map<OptionLike<T>>((opt) => ({
+    value: opt.value,
+    label: opt.label,
+    disabled: disabledValues.includes(opt.value)
+  }));
 
   if (includeNone) {
     opts.unshift({value: undefined, label: 'None'});
@@ -263,12 +231,10 @@ async function handler(outDir: string, opts: Options): Promise<void> {
     if (linter !== undefined) {
       const lintCategoriesInput = await prompts.multiselect({
         message: 'Choose lint categories',
-        options: Object.entries<string>(LINT_CATEGORIES).map(
-          ([value, label]) => ({
-            value,
-            label
-          })
-        ),
+        options: LINT_CATEGORIES.map((opt) => ({
+          value: opt.value,
+          label: opt.label
+        })),
         required: false
       });
 
@@ -319,9 +285,12 @@ async function handler(outDir: string, opts: Options): Promise<void> {
 
     uiFramework = uiFrameworkInput;
 
+    const incompatibleBundlers: Bundler[] =
+      INCOMPATIBLE_BUNDLERS[uiFramework as UIFramework] ?? [];
+
     const bundlerInput = await prompts.select({
       message: 'Choose a bundler',
-      options: toSelectOptions(BUNDLERS, true),
+      options: toSelectOptions(BUNDLERS, true, incompatibleBundlers),
       initialValue: bundler
     });
 
@@ -351,14 +320,14 @@ async function handler(outDir: string, opts: Options): Promise<void> {
 
   if (linter !== undefined && !isValidOption(linter, LINTERS)) {
     prompts.log.error(
-      `Invalid linter: ${linter}. Valid options: ${Object.keys(LINTERS).join(', ')}`
+      `Invalid linter: ${linter}. Valid options: ${LINTERS.map((l) => l.value).join(', ')}`
     );
     return;
   }
 
   if (formatter !== undefined && !isValidOption(formatter, FORMATTERS)) {
     prompts.log.error(
-      `Invalid formatter: ${formatter}. Valid options: ${Object.keys(FORMATTERS).join(', ')}`
+      `Invalid formatter: ${formatter}. Valid options: ${FORMATTERS.map((f) => f.value).join(', ')}`
     );
     return;
   }
@@ -368,21 +337,21 @@ async function handler(outDir: string, opts: Options): Promise<void> {
     !isValidOption(testFramework, TEST_FRAMEWORKS)
   ) {
     prompts.log.error(
-      `Invalid test framework: ${testFramework}. Valid options: ${Object.keys(TEST_FRAMEWORKS).join(', ')}`
+      `Invalid test framework: ${testFramework}. Valid options: ${TEST_FRAMEWORKS.map((t) => t.value).join(', ')}`
     );
     return;
   }
 
   if (uiFramework !== undefined && !isValidOption(uiFramework, UI_FRAMEWORKS)) {
     prompts.log.error(
-      `Invalid UI framework: ${uiFramework}. Valid options: ${Object.keys(UI_FRAMEWORKS).join(', ')}`
+      `Invalid UI framework: ${uiFramework}. Valid options: ${UI_FRAMEWORKS.map((u) => u.value).join(', ')}`
     );
     return;
   }
 
   if (bundler !== undefined && !isValidOption(bundler, BUNDLERS)) {
     prompts.log.error(
-      `Invalid bundler: ${bundler}. Valid options: ${Object.keys(BUNDLERS).join(', ')}`
+      `Invalid bundler: ${bundler}. Valid options: ${BUNDLERS.map((b) => b.value).join(', ')}`
     );
     return;
   }
@@ -390,7 +359,7 @@ async function handler(outDir: string, opts: Options): Promise<void> {
   for (const category of lintCategories) {
     if (!isValidOption(category, LINT_CATEGORIES)) {
       prompts.log.error(
-        `Invalid lint category: ${category}. Valid options: ${Object.keys(LINT_CATEGORIES).join(', ')}`
+        `Invalid lint category: ${category}. Valid options: ${LINT_CATEGORIES.map((c) => c.value).join(', ')}`
       );
       return;
     }

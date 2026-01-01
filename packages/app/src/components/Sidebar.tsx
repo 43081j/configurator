@@ -1,10 +1,11 @@
-import type {
-  Linter,
-  Formatter,
-  TestFramework,
-  UIFramework,
-  Bundler,
-  LintCategory
+import {
+  LINTERS,
+  FORMATTERS,
+  TEST_FRAMEWORKS,
+  UI_FRAMEWORKS,
+  BUNDLERS,
+  LINT_CATEGORIES,
+  INCOMPATIBLE_BUNDLERS
 } from '@43081j/configurator-core';
 import {TagInput} from './TagInput.js';
 import {TextInput} from './TextInput.js';
@@ -14,48 +15,18 @@ import {RadioGroup} from './RadioGroup.js';
 import * as store from '../store/config.js';
 import {sidebarOpen} from '../store/ui.js';
 
-const LINTERS: Array<{value: Linter; label: string}> = [
-  {value: 'eslint', label: 'ESLint'},
-  {value: 'oxlint', label: 'oxlint'},
-  {value: 'biome', label: 'Biome'}
-];
-
-const FORMATTERS: Array<{value: Formatter; label: string}> = [
-  {value: 'prettier', label: 'Prettier'},
-  {value: 'oxfmt', label: 'oxfmt'},
-  {value: 'biome', label: 'Biome'}
-];
-
-const TEST_FRAMEWORKS: Array<{value: TestFramework; label: string}> = [
-  {value: 'jest', label: 'Jest'},
-  {value: 'mocha', label: 'Mocha'},
-  {value: 'vitest', label: 'Vitest'}
-];
-
-const UI_FRAMEWORKS: Array<{value: UIFramework; label: string}> = [
-  {value: 'react', label: 'React'},
-  {value: 'vue', label: 'Vue'},
-  {value: 'svelte', label: 'Svelte'},
-  {value: 'lit', label: 'Lit'},
-  {value: 'angular', label: 'Angular'},
-  {value: 'preact', label: 'Preact'}
-];
-
-const BUNDLERS: Array<{value: Bundler; label: string}> = [
-  {value: 'tsdown', label: 'tsdown'},
-  {value: 'zshy', label: 'zshy'},
-  {value: 'typescript', label: 'TypeScript'},
-  {value: 'rolldown', label: 'Rolldown'},
-  {value: 'esbuild', label: 'esbuild'}
-];
-
-const LINT_CATEGORIES: Array<{value: LintCategory; label: string}> = [
-  {value: 'correctness', label: 'Correctness'},
-  {value: 'performance', label: 'Performance'},
-  {value: 'modernization', label: 'Modernization'}
-];
-
 export function Sidebar() {
+  const selectedUIFramework = store.uiFramework.value;
+  const incompatibleBundlers =
+    selectedUIFramework && selectedUIFramework !== 'none'
+      ? INCOMPATIBLE_BUNDLERS[selectedUIFramework]
+      : [];
+
+  const bundlerOptions = BUNDLERS.map((bundler) => ({
+    ...bundler,
+    disabled: incompatibleBundlers.includes(bundler.value)
+  }));
+
   return (
     <>
       <div
@@ -167,7 +138,7 @@ export function Sidebar() {
             label="Bundler"
             value={store.bundler.value}
             onChange={(v) => (store.bundler.value = v)}
-            options={BUNDLERS}
+            options={bundlerOptions}
             includeNone
           />
 
