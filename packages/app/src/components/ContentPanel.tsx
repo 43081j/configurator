@@ -37,39 +37,45 @@ export function ContentPanel() {
 
   return (
     <div class="flex flex-col h-full">
-      <div class="flex items-center border-b border-gray-200 bg-white overflow-x-auto">
-        <button
-          onClick={() => (sidebarOpen.value = true)}
-          class="md:hidden sticky left-0 p-2 ml-2 mr-2 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0 bg-white z-10"
-          aria-label="Open menu"
-        >
-          <div class="i-material-symbols-menu text-2xl text-gray-700" />
-        </button>
-
-        {tabs.map((tab) => (
+      <div class="flex border-b border-gray-200 bg-white">
+        <div class="flex-shrink-0 md:hidden flex items-center">
           <button
-            key={tab.id}
-            onClick={() => (activeTab.value = tab.id)}
-            class={`px-4 py-3 text-sm font-medium border-b-2 transition-colors flex-shrink-0 whitespace-nowrap ${
-              activeTab.value === tab.id
-                ? 'border-blue-600 text-blue-600'
-                : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
-            }`}
+            onClick={() => (sidebarOpen.value = true)}
+            class="p-2 ml-2 mr-2 hover:bg-gray-100 rounded-lg transition-colors"
+            aria-label="Open menu"
           >
-            {tab.label}
+            <div class="i-material-symbols-menu text-2xl text-gray-700" />
           </button>
-        ))}
+        </div>
 
-        <button
-          onClick={() => exportFilesAsTar(content.files)}
-          disabled={content.files.length === 0}
-          class="ml-auto sticky right-0 mr-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex-shrink-0 z-10 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600 flex items-center gap-2 text-sm font-medium cursor-pointer"
-          aria-label="Export files as tar"
-          title="Export files as tar"
-        >
-          <span>Export</span>
-          <div class="i-material-symbols-download text-xl" />
-        </button>
+        <div class="flex-1 overflow-x-auto flex items-center">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => (activeTab.value = tab.id)}
+              class={`px-4 py-3 text-sm font-medium border-b-2 transition-colors flex-shrink-0 whitespace-nowrap ${
+                activeTab.value === tab.id
+                  ? 'border-blue-600 text-blue-600'
+                  : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        <div class="flex-shrink-0 flex items-center">
+          <button
+            onClick={() => exportFilesAsTar(content.files)}
+            disabled={content.files.length === 0}
+            class="mr-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600 flex items-center gap-2 text-sm font-medium cursor-pointer"
+            aria-label="Export files as tar"
+            title="Export files as tar"
+          >
+            <span>Export</span>
+            <div class="i-material-symbols-download text-xl" />
+          </button>
+        </div>
       </div>
 
       <div class="flex-1 overflow-auto p-6">
