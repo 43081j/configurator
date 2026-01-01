@@ -7,6 +7,7 @@ import {processor as mochaProcessor} from './processors/mocha.js';
 import {processor as eslintProcessor} from './processors/eslint.js';
 import {processor as biomeProcessor} from './processors/biome.js';
 import {processor as zshyProcessor} from './processors/zshy.js';
+import {processor as typescriptProcessor} from './processors/typescript.js';
 import type {Context, Processor, Config} from './types.js';
 import {ConfigValidationError} from './types.js';
 
@@ -21,7 +22,8 @@ const processors = new Set<Processor>([
   mochaProcessor,
   eslintProcessor,
   biomeProcessor,
-  zshyProcessor
+  zshyProcessor,
+  typescriptProcessor
 ]);
 
 const bundlersRequiringEntryPoint = ['tsdown', 'zshy', 'rolldown', 'esbuild'];
@@ -40,6 +42,12 @@ function validateConfig(config: Config): void {
   if (config.bundler === 'zshy' && !config.typescript) {
     throw new ConfigValidationError(
       'Bundler "zshy" requires TypeScript to be enabled'
+    );
+  }
+
+  if (config.bundler === 'typescript' && !config.typescript) {
+    throw new ConfigValidationError(
+      'Bundler "typescript" requires TypeScript to be enabled'
     );
   }
 }

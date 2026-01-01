@@ -129,5 +129,27 @@ describe('main', () => {
         'Bundler "zshy" requires TypeScript to be enabled'
       );
     });
+
+    it('should throw when typescript bundler is used without typescript', async () => {
+      const context: Context = {
+        config: {
+          mainEntryPoint: 'src/main.ts',
+          sources: ['src/**/*.ts'],
+          tests: ['src/**/*.test.ts'],
+          bundler: 'typescript',
+          typescript: false
+        },
+        emitFile: vi.fn(),
+        addDependency: vi.fn(),
+        addDevDependency: vi.fn(),
+        emitPackageField: vi.fn(),
+        finalise: vi.fn().mockResolvedValue(undefined)
+      };
+
+      await expect(execute(context)).rejects.toThrow(ConfigValidationError);
+      await expect(execute(context)).rejects.toThrow(
+        'Bundler "typescript" requires TypeScript to be enabled'
+      );
+    });
   });
 });
