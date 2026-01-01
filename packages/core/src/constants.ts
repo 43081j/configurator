@@ -53,9 +53,12 @@ export const LINT_CATEGORIES: Array<LabeledOption<LintCategory>> = [
   {value: 'modernization', label: 'Modernization'}
 ];
 
-export const INCOMPATIBLE_BUNDLERS: Record<UIFramework, Bundler[]> = {
-  vue: ['typescript', 'zshy'],
-  svelte: [],
+export const INCOMPATIBLE_BUNDLERS: Record<
+  UIFramework,
+  Array<Bundler | 'none'>
+> = {
+  vue: ['typescript', 'zshy', 'none'],
+  svelte: ['typescript', 'zshy', 'none'],
   react: [],
   preact: [],
   lit: [],

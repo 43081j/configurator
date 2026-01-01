@@ -10,6 +10,7 @@ import {processor as zshyProcessor} from './processors/zshy.js';
 import {processor as typescriptProcessor} from './processors/typescript.js';
 import type {Context, Processor, Config} from './types.js';
 import {ConfigValidationError} from './types.js';
+import {INCOMPATIBLE_BUNDLERS} from './constants.js';
 
 export * from './types.js';
 export * from './constants.js';
@@ -52,15 +53,18 @@ function validateConfig(config: Config): void {
     );
   }
 
-  if (
-    config.uiFramework === 'vue' &&
-    (!config.bundler ||
-      config.bundler === 'typescript' ||
-      config.bundler === 'zshy')
-  ) {
-    throw new ConfigValidationError(
-      'UI framework "vue" requires a bundler to be selected which is capable of handling Vue files'
-    );
+  if (config.uiFramework) {
+    const incompatibleBundlers = INCOMPATIBLE_BUNDLERS[config.uiFramework];
+    const selectedBundler = config.bundler ?? 'none';
+
+    if (
+      incompatibleBundlers.length > 0 &&
+      incompatibleBundlers.includes(selectedBundler)
+    ) {
+      throw new ConfigValidationError(
+        `UI framework "${config.uiFramework}" requires a bundler to be selected which is capable of handling ${config.uiFramework} files`
+      );
+    }
   }
 }
 

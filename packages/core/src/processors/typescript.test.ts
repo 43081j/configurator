@@ -146,4 +146,32 @@ describe('typescript processor', () => {
       '.': 'dist/main.js'
     });
   });
+
+  it('should emit tsconfig extending svelte-kit when uiFramework is svelte', async () => {
+    const {context, files} = createContext({uiFramework: 'svelte'});
+
+    await processor(context);
+
+    expect(context.addDevDependency).toHaveBeenCalledWith(
+      '@typescript/native-preview',
+      '^7.0.0-dev.20260101.1'
+    );
+    // Should NOT add @tsconfig/strictest for svelte
+    expect(context.addDevDependency).not.toHaveBeenCalledWith(
+      '@tsconfig/strictest',
+      expect.anything()
+    );
+    expect(context.addDependency).not.toHaveBeenCalled();
+    expect(files).toMatchSnapshot();
+    expect(context.emitPackageField).toHaveBeenCalledWith('scripts', {
+      build: 'tsgo'
+    });
+    expect(context.emitPackageField).toHaveBeenCalledWith(
+      'main',
+      'dist/main.js'
+    );
+    expect(context.emitPackageField).toHaveBeenCalledWith('exports', {
+      '.': 'dist/main.js'
+    });
+  });
 });

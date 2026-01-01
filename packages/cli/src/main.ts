@@ -53,7 +53,7 @@ type OptionLike<T> = {
 function toSelectOptions<T extends string>(
   options: Array<LabeledOption<T>>,
   includeNone = false,
-  disabledValues: T[] = []
+  disabledValues: Array<T | 'none'> = []
 ): Array<OptionLike<T>> {
   const opts = options.map<OptionLike<T>>((opt) => ({
     value: opt.value,
@@ -62,7 +62,11 @@ function toSelectOptions<T extends string>(
   }));
 
   if (includeNone) {
-    opts.unshift({value: undefined, label: 'None'});
+    opts.unshift({
+      value: undefined,
+      label: 'None',
+      disabled: disabledValues.includes('none')
+    });
   }
 
   return opts;
@@ -285,7 +289,7 @@ async function handler(outDir: string, opts: Options): Promise<void> {
 
     uiFramework = uiFrameworkInput;
 
-    const incompatibleBundlers: Bundler[] =
+    const incompatibleBundlers: Array<Bundler | 'none'> =
       INCOMPATIBLE_BUNDLERS[uiFramework as UIFramework] ?? [];
 
     const bundlerInput = await prompts.select({
