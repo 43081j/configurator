@@ -170,7 +170,7 @@ describe('main', () => {
 
       await expect(execute(context)).rejects.toThrow(ConfigValidationError);
       await expect(execute(context)).rejects.toThrow(
-        'UI framework "vue" requires a bundler to be selected which is capable of handling Vue files'
+        'UI framework "vue" requires a bundler to be selected which is capable of handling vue files'
       );
     });
 
@@ -193,7 +193,7 @@ describe('main', () => {
 
       await expect(execute(context)).rejects.toThrow(ConfigValidationError);
       await expect(execute(context)).rejects.toThrow(
-        'UI framework "vue" requires a bundler to be selected which is capable of handling Vue files'
+        'UI framework "vue" requires a bundler to be selected which is capable of handling vue files'
       );
     });
 
@@ -216,7 +216,75 @@ describe('main', () => {
 
       await expect(execute(context)).rejects.toThrow(ConfigValidationError);
       await expect(execute(context)).rejects.toThrow(
-        'UI framework "vue" requires a bundler to be selected which is capable of handling Vue files'
+        'UI framework "vue" requires a bundler to be selected which is capable of handling vue files'
+      );
+    });
+
+    it('should throw when svelte ui framework is used without a bundler', async () => {
+      const context: Context = {
+        config: {
+          mainEntryPoint: 'src/main.ts',
+          sources: ['src/**/*.ts'],
+          tests: ['src/**/*.test.ts'],
+          uiFramework: 'svelte',
+          typescript: true
+        },
+        emitFile: vi.fn(),
+        addDependency: vi.fn(),
+        addDevDependency: vi.fn(),
+        emitPackageField: vi.fn(),
+        finalise: vi.fn().mockResolvedValue(undefined)
+      };
+
+      await expect(execute(context)).rejects.toThrow(ConfigValidationError);
+      await expect(execute(context)).rejects.toThrow(
+        'UI framework "svelte" requires a bundler to be selected which is capable of handling svelte files'
+      );
+    });
+
+    it('should throw when svelte ui framework is used with typescript bundler', async () => {
+      const context: Context = {
+        config: {
+          mainEntryPoint: 'src/main.ts',
+          sources: ['src/**/*.ts'],
+          tests: ['src/**/*.test.ts'],
+          uiFramework: 'svelte',
+          bundler: 'typescript',
+          typescript: true
+        },
+        emitFile: vi.fn(),
+        addDependency: vi.fn(),
+        addDevDependency: vi.fn(),
+        emitPackageField: vi.fn(),
+        finalise: vi.fn().mockResolvedValue(undefined)
+      };
+
+      await expect(execute(context)).rejects.toThrow(ConfigValidationError);
+      await expect(execute(context)).rejects.toThrow(
+        'UI framework "svelte" requires a bundler to be selected which is capable of handling svelte files'
+      );
+    });
+
+    it('should throw when svelte ui framework is used with zshy bundler', async () => {
+      const context: Context = {
+        config: {
+          mainEntryPoint: 'src/main.ts',
+          sources: ['src/**/*.ts'],
+          tests: ['src/**/*.test.ts'],
+          uiFramework: 'svelte',
+          bundler: 'zshy',
+          typescript: true
+        },
+        emitFile: vi.fn(),
+        addDependency: vi.fn(),
+        addDevDependency: vi.fn(),
+        emitPackageField: vi.fn(),
+        finalise: vi.fn().mockResolvedValue(undefined)
+      };
+
+      await expect(execute(context)).rejects.toThrow(ConfigValidationError);
+      await expect(execute(context)).rejects.toThrow(
+        'UI framework "svelte" requires a bundler to be selected which is capable of handling svelte files'
       );
     });
   });

@@ -55,7 +55,9 @@ export const processor: Processor = async (context) => {
     '^7.0.0-dev.20260101.1'
   );
 
-  context.addDevDependency('@tsconfig/strictest', '^2.0.8');
+  if (context.config.uiFramework !== 'svelte') {
+    context.addDevDependency('@tsconfig/strictest', '^2.0.8');
+  }
 
   switch (context.config.uiFramework) {
     case 'preact':
@@ -83,6 +85,15 @@ export const processor: Processor = async (context) => {
           jsx: 'preserve',
           jsxImportSource: 'vue'
         })
+      });
+      break;
+    case 'svelte':
+      context.emitFile({
+        name: 'tsconfig.json',
+        contents: {
+          ...createTSConfig(context),
+          extends: './.svelte-kit/tsconfig.json'
+        }
       });
       break;
     default:
