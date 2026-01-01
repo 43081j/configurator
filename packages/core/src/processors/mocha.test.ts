@@ -1,50 +1,46 @@
 import {describe, it, expect, vi} from 'vitest';
 import {processor} from './mocha.js';
-import type {Context} from '../types.js';
+import type {Context, Config} from '../types.js';
+
+function createContext(configOverrides: Partial<Config> = {}): {
+  context: Context;
+  files: Record<string, unknown>;
+} {
+  const files: Record<string, unknown> = {};
+  const context: Context = {
+    config: {
+      mainEntryPoint: 'src/main.ts',
+      sources: ['src/**/*.ts'],
+      tests: ['src/**/*.test.ts'],
+      testFramework: 'mocha',
+      typescript: false,
+      ...configOverrides
+    },
+    addDevDependency: vi.fn(),
+    addDependency: vi.fn(),
+    emitFile(file) {
+      files[file.name] = file.contents;
+      return Promise.resolve();
+    },
+    emitPackageField: vi.fn(),
+    finalise: vi.fn().mockResolvedValue(undefined)
+  };
+  return {context, files};
+}
 
 describe('mocha processor', () => {
   it('should do nothing if test framework is not mocha', async () => {
-    const context: Context = {
-      config: {
-        mainEntryPoint: 'src/main.ts',
-        sources: ['src/**/*.ts'],
-        tests: ['src/**/*.test.ts'],
-        testFramework: 'jest',
-        typescript: false
-      },
-      addDevDependency: vi.fn(),
-      addDependency: vi.fn(),
-      emitFile: vi.fn(),
-      emitPackageField: vi.fn(),
-      finalise: vi.fn().mockResolvedValue(undefined)
-    };
+    const {context, files} = createContext({testFramework: 'jest'});
 
     await processor(context);
 
     expect(context.addDevDependency).not.toHaveBeenCalled();
     expect(context.addDependency).not.toHaveBeenCalled();
-    expect(context.emitFile).not.toHaveBeenCalled();
+    expect(files).toEqual({});
   });
 
   it('should emit mocharc and add dependencies', async () => {
-    const files: Record<string, unknown> = {};
-    const context: Context = {
-      config: {
-        mainEntryPoint: 'src/main.ts',
-        sources: ['src/**/*.ts'],
-        tests: ['src/**/*.test.ts'],
-        testFramework: 'mocha',
-        typescript: false
-      },
-      addDevDependency: vi.fn(),
-      addDependency: vi.fn(),
-      emitFile(file) {
-        files[file.name] = file.contents;
-        return Promise.resolve();
-      },
-      emitPackageField: vi.fn(),
-      finalise: vi.fn().mockResolvedValue(undefined)
-    };
+    const {context, files} = createContext();
 
     await processor(context);
 
@@ -54,24 +50,7 @@ describe('mocha processor', () => {
   });
 
   it('should add typescript support if typescript is true', async () => {
-    const files: Record<string, unknown> = {};
-    const context: Context = {
-      config: {
-        mainEntryPoint: 'src/main.ts',
-        sources: ['src/**/*.ts'],
-        tests: ['src/**/*.test.ts'],
-        testFramework: 'mocha',
-        typescript: true
-      },
-      addDevDependency: vi.fn(),
-      addDependency: vi.fn(),
-      emitFile(file) {
-        files[file.name] = file.contents;
-        return Promise.resolve();
-      },
-      emitPackageField: vi.fn(),
-      finalise: vi.fn().mockResolvedValue(undefined)
-    };
+    const {context, files} = createContext({typescript: true});
 
     await processor(context);
 
