@@ -17,7 +17,7 @@ const processBundler = async (context: Context) => {
     '.': mainField
   });
   context.emitPackageField('scripts', {
-    build: 'tsc'
+    build: 'tsgo'
   });
 };
 
@@ -30,7 +30,10 @@ export const processor: Processor = async (context) => {
     await processBundler(context);
   }
 
-  context.addDevDependency('typescript', '^5.9.3');
+  context.addDevDependency(
+    '@typescript/native-preview',
+    '^7.0.0-dev.20260101.1'
+  );
   context.addDevDependency('@tsconfig/strictest', '^2.0.8');
   context.emitFile({
     name: 'tsconfig.json',
