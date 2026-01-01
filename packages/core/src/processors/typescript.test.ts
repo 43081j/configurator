@@ -29,7 +29,7 @@ function createContext(configOverrides: Partial<Config> = {}): {
 }
 
 describe('typescript processor', () => {
-  it('should only add dependency if bundler is not typescript', async () => {
+  it('should only add dependency & tsconfig if bundler is not typescript', async () => {
     const {context, files} = createContext({bundler: 'tsdown'});
 
     await processor(context);
@@ -39,11 +39,11 @@ describe('typescript processor', () => {
       '^5.9.3'
     );
     expect(context.addDependency).not.toHaveBeenCalled();
-    expect(files).toEqual({});
+    expect(files).toMatchSnapshot();
     expect(context.emitPackageField).not.toHaveBeenCalled();
   });
 
-  it('should emit package fields', async () => {
+  it('should emit package fields and tsconfig', async () => {
     const {context, files} = createContext();
 
     await processor(context);
@@ -53,7 +53,7 @@ describe('typescript processor', () => {
       '^5.9.3'
     );
     expect(context.addDependency).not.toHaveBeenCalled();
-    expect(files).toEqual({});
+    expect(files).toMatchSnapshot();
     expect(context.emitPackageField).toHaveBeenCalledWith('scripts', {
       build: 'tsc'
     });

@@ -1,0 +1,41 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`typescript processor > should emit package fields and tsconfig 1`] = `
+{
+  "tsconfig.json": {
+    "compilerOptions": {
+      "declaration": true,
+      "erasableSyntaxOnly": true,
+      "module": "node18",
+      "outDir": "dist",
+      "sourceMap": false,
+      "target": "esnext",
+      "types": [],
+    },
+    "extends": "@tsconfig/strictest/tsconfig.json",
+    "include": [
+      "src/**/*.ts",
+    ],
+  },
+}
+`;
+
+exports[`typescript processor > should only add dependency & tsconfig if bundler is not typescript 1`] = `
+{
+  "tsconfig.json": {
+    "compilerOptions": {
+      "declaration": true,
+      "erasableSyntaxOnly": true,
+      "module": "node18",
+      "outDir": "dist",
+      "sourceMap": false,
+      "target": "esnext",
+      "types": [],
+    },
+    "extends": "@tsconfig/strictest/tsconfig.json",
+    "include": [
+      "src/**/*.ts",
+    ],
+  },
+}
+`;

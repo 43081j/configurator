@@ -15,5 +15,20 @@ exports[`main > execute > should process context without errors 1`] = `
     ],
     "rules": {},
   },
+  "tsconfig.json": {
+    "compilerOptions": {
+      "declaration": true,
+      "erasableSyntaxOnly": true,
+      "module": "node18",
+      "outDir": "dist",
+      "sourceMap": false,
+      "target": "esnext",
+      "types": [],
+    },
+    "extends": "@tsconfig/strictest/tsconfig.json",
+    "include": [
+      "src/**/*.ts",
+    ],
+  },
 }
 `;

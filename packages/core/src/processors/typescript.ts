@@ -1,14 +1,6 @@
-import type {Processor} from '../types.js';
+import type {Processor, Context} from '../types.js';
 
-export const processor: Processor = async (context) => {
-  if (context.config.typescript) {
-    context.addDevDependency('typescript', '^5.9.3');
-  }
-
-  if (context.config.bundler !== 'typescript') {
-    return;
-  }
-
+const processBundler = async (context: Context) => {
   const entrypoint = context.config.mainEntryPoint;
   const pathWithoutFirstSegment = entrypoint.split('/', 2)[1];
 
@@ -26,5 +18,36 @@ export const processor: Processor = async (context) => {
   });
   context.emitPackageField('scripts', {
     build: 'tsc'
+  });
+};
+
+export const processor: Processor = async (context) => {
+  if (!context.config.typescript) {
+    return;
+  }
+
+  if (context.config.bundler === 'typescript') {
+    await processBundler(context);
+  }
+
+  context.addDevDependency('typescript', '^5.9.3');
+  context.addDevDependency('@tsconfig/strictest', '^2.0.8');
+  context.emitFile({
+    name: 'tsconfig.json',
+    contents: {
+      extends: '@tsconfig/strictest/tsconfig.json',
+      compilerOptions: {
+        module: 'node18',
+        target: 'esnext',
+        types: [],
+        outDir: 'dist',
+        declaration: true,
+        sourceMap: false,
+        erasableSyntaxOnly: true
+      },
+      // TODO (jg): maybe transform this to the root dir, e.g. `src`?
+      // instead of a glob
+      include: context.config.sources
+    }
   });
 };
