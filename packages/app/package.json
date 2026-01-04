@@ -14,9 +14,9 @@
   },
   "devDependencies": {
     "@iconify-json/material-symbols": "^1.2.50",
-    "@typescript/native-preview": "^7.0.0-dev.20251228.1",
+    "@typescript/native-preview": "^7.0.0-dev.20260103.1",
     "nanotar": "^0.2.0",
-    "unocss": "^66.5.11",
+    "unocss": "^66.5.12",
     "vite": "^7.3.0"
   }
 }
