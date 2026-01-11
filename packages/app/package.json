@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@preact/signals": "^2.5.1",
-    "preact": "^10.28.1"
+    "preact": "^10.28.2"
   },
   "devDependencies": {
     "@iconify-json/material-symbols": "^1.2.51",
