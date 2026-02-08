@@ -9,7 +9,7 @@
     "lint:types": "tsgo --noEmit"
   },
   "dependencies": {
-    "@preact/signals": "^2.6.2",
+    "@preact/signals": "^2.7.0",
     "preact": "^10.28.3"
   },
   "devDependencies": {
