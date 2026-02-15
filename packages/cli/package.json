@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@43081j/configurator-core": "^0.0.1",
-    "@clack/prompts": "^1.0.0",
+    "@clack/prompts": "^1.0.1",
     "sade": "^1.8.1"
   }
 }
