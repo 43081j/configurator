@@ -1,7 +1,7 @@
 import type {Processor} from '../types.js';
 
 export const processor: Processor = async (context) => {
-  const isBunTestRunner = context.config.testRunner === 'bun';
+  const isBunTestRunner = context.config.testFramework === 'bun';
 
   if (!isBunTestRunner) {
     return;
