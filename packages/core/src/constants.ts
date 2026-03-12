@@ -27,7 +27,8 @@ export const FORMATTERS: Array<LabeledOption<Formatter>> = [
 export const TEST_FRAMEWORKS: Array<LabeledOption<TestFramework>> = [
   {value: 'jest', label: 'Jest'},
   {value: 'mocha', label: 'Mocha'},
-  {value: 'vitest', label: 'Vitest'}
+  {value: 'vitest', label: 'Vitest'},
+  {value: 'bun', label: 'Bun'}
 ];
 
 export const UI_FRAMEWORKS: Array<LabeledOption<UIFramework>> = [
