@@ -2,7 +2,7 @@ export type Linter = 'eslint' | 'oxlint' | 'biome';
 
 export type Formatter = 'prettier' | 'oxfmt' | 'biome';
 
-export type TestFramework = 'jest' | 'mocha' | 'vitest';
+export type TestFramework = 'jest' | 'mocha' | 'vitest' | 'bun';
 
 export type UIFramework =
   | 'react'

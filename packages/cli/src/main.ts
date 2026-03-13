@@ -464,7 +464,7 @@ export function cli(): void {
     )
     .option(
       '--test-framework',
-      'Test framework (jest, mocha, vitest)',
+      'Test framework (jest, mocha, vitest, bun)',
       defaults.testFramework ?? 'none'
     )
     .option(
