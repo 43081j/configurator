@@ -11,8 +11,8 @@
     "build": "tsgo"
   },
   "devDependencies": {
-    "@types/node": "^25.3.5",
-    "@typescript/native-preview": "^7.0.0-dev.20260307.1"
+    "@types/node": "^25.5.0",
+    "@typescript/native-preview": "^7.0.0-dev.20260314.1"
   },
   "dependencies": {
     "@43081j/configurator-core": "^0.0.1",
