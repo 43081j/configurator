@@ -15,8 +15,8 @@
     "lint:types": "tsgo --noEmit"
   },
   "devDependencies": {
-    "@typescript/native-preview": "^7.0.0-dev.20260321.1",
+    "@typescript/native-preview": "^7.0.0-dev.20260328.1",
     "eslint-plugin-lit": "^2.2.1",
-    "tsdown": "^0.21.4"
+    "tsdown": "^0.21.7"
   }
 }
