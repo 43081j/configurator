@@ -13,10 +13,10 @@
     "preact": "^10.29.1"
   },
   "devDependencies": {
-    "@iconify-json/material-symbols": "^1.2.67",
-    "@typescript/native-preview": "^7.0.0-dev.20260418.1",
+    "@iconify-json/material-symbols": "^1.2.69",
+    "@typescript/native-preview": "^7.0.0-dev.20260425.1",
     "nanotar": "^0.3.0",
     "unocss": "^66.6.8",
-    "vite": "^8.0.8"
+    "vite": "^8.0.10"
   }
 }
