@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "@types/node": "^25.9.1",
-    "@typescript/native-preview": "^7.0.0-dev.20260523.1"
+    "@typescript/native-preview": "^7.0.0-dev.20260527.2"
   },
   "dependencies": {
     "@43081j/configurator-core": "^0.0.1",
