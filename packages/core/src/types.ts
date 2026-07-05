@@ -5,12 +5,7 @@ export type Formatter = 'prettier' | 'oxfmt' | 'biome';
 export type TestFramework = 'jest' | 'mocha' | 'vitest' | 'bun';
 
 export type UIFramework =
-  | 'react'
-  | 'vue'
-  | 'svelte'
-  | 'lit'
-  | 'angular'
-  | 'preact';
+  'react' | 'vue' | 'svelte' | 'lit' | 'angular' | 'preact';
 
 export type Bundler = 'tsdown' | 'zshy' | 'typescript' | 'rolldown' | 'esbuild';
 
