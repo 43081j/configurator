@@ -35,7 +35,7 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "oxlint": "^1.75.0",
+    "oxlint": "^1.76.0",
     "prettier": "^3.9.6",
     "vitest": "^4.1.10"
   }
