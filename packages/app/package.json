@@ -9,8 +9,8 @@
     "lint:types": "tsgo --noEmit"
   },
   "dependencies": {
-    "@preact/signals": "^2.11.3",
-    "preact": "^11.0.1"
+    "@preact/signals": "^2.11.4",
+    "preact": "^11.1.0"
   },
   "devDependencies": {
     "@iconify-json/material-symbols": "^1.2.95",
